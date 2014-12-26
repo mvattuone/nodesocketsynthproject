@@ -1,6 +1,6 @@
 var express = require('express');
 var app = express();
-var server = require('http').createServer(app);
+var server = require('http').createServer(app).listen(process.env.PORT || 8080);
 var io = require('socket.io')(server);
 var redis = require('redis');
 var redisClient = redis.createClient();
@@ -57,5 +57,3 @@ io.sockets.on('connection', function(client) {
 app.get('/', function(req, res) {
 	res.sendFile(__dirname + '/index.html');
 });
-
-server.listen(8080);
