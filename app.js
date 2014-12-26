@@ -30,7 +30,7 @@ io.sockets.on('connection', function(client) {
 				client.emit('messages', message.name + ': ' + message.data);
 			});
 		});
-		redisClient.smembers('names', function(err, names) {
+		redisClient.smembers('chatters', function(err, names) {
 			names.forEach(function(name) {
 				client.emit('add chatter', name);
 			});
@@ -46,11 +46,10 @@ io.sockets.on('connection', function(client) {
 	});
 
 	client.on('disconnect', function(name) {
-		client.get('nickname', function(err, name) {
-			client.broadcast.emit('remove chatter', name);
+		var nickname = client.nickname
+		client.broadcast.emit('remove chatter', nickname);
 
-			redisClient.srem('chatters', name);
-		});
+		redisClient.srem('chatters', nickname);
 	});
 });
 

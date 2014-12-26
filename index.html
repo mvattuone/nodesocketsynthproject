@@ -7,10 +7,12 @@
 		$('#messages').append(message);
 	}
 	var insertChatter = function(name) {
+		console.log("insertChatter");
 		var chatter = $('<li>'+name+'</li>').data('name', name);
 		$('#chatters').append(chatter);
 	}
 	var removeChatter = function(name) {
+		console.log("removeChatter");
 		$('#chatters li[data-name=' + name + ']').remove();
 	}
 	$('#chat_form').submit(function(e) {
@@ -34,4 +36,7 @@
 <h3 id="status"></h3>
 <ul id="chatters"></ul>
 <ul id ="messages"></ul>
-<form id="chat_form"></form>
+<form id="chat_form">
+	<input type="text">
+	<input type="submit">
+</form>

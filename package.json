@@ -2,7 +2,6 @@
   "name": "nodeSynth",
   "version": "0.0.1",
   "dependencies": {
-    "ejs": "^1.0.0",
     "express": "^4.10.6",
     "redis": "^0.12.1",
     "socket.io": "^1.2.1",
