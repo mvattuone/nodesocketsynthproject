@@ -1,10 +1,28 @@
 {
   "name": "nodeSynth",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "collaborative music making in the browser",
   "main": "index.js",
+  "scripts": {
+  	"start": "node index.js"
+  },
   "dependencies": {
     "express": "^4.10.6",
     "socket.io": "^1.2.1"
-  }
+  },
+  "engines": {
+  	"node": "0.10.x"
+  },
+  "repository": {
+  	"type": "git",
+  	"url": "https://github.com/infinityfarm/nodesocketsynthproject"
+  },
+  "keywords": [
+  	"node",
+  	"heroku",
+  	"express",
+  	"three.js",
+  	"socket.io"
+  ],
+  "license": "MIT"
 }
