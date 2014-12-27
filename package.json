@@ -1,16 +1,10 @@
 {
   "name": "nodeSynth",
-  "version": "0.0.1",
+  "version": "0.0.0",
+  "description": "collaborative music making in the browser",
+  "main": "index.js",
   "dependencies": {
     "express": "^4.10.6",
-    "redis": "^0.12.1",
-    "socket.io": "^1.2.1",
-    "three": "^0.69.0"
-  },
-  "engines": {
-  	"node": "0.10.x"
-  },
-  "scripts": {
-  	"start": "node app.js"
+    "socket.io": "^1.2.1"
   }
 }
