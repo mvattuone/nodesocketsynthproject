@@ -14,7 +14,7 @@ app.use(express.static(__dirname + '/public'));
 
 // Chatroom
 
-// username which are currently connected to the chat 
+// username which are currently connected to the chat
 var usernames = {};
 var numUsers = 0;
 
@@ -76,4 +76,11 @@ io.on('connection', function(socket) {
 			});
 		}
 	});
+
+	socket.on('change color', function(data) {
+		console.log(data);
+		socket.broadcast.emit('button pressed', data);
+		console.log('socket: server sends emit');
+	});
+
 });

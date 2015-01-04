@@ -1,6 +1,8 @@
 var bass_buttons = [0,0,0,0,0,0,0,0];
 var bass_gain = 0;
 
+var socket = io();
+
 var playing = false;
 
 var renderPlayer = function(){
@@ -11,7 +13,7 @@ var renderPlayer = function(){
 	var controls;
 	var projector;
 	var clock = new THREE.Clock();
-	var objects = [];          
+	var objects = [];
 
 	var kick_slider;
 	var kick_knob;
@@ -24,6 +26,10 @@ var renderPlayer = function(){
 	init();
 
 	function init(){
+
+		socket.on('button pressed', function(data) {
+			console.log('hello');
+		});
 
 		scene = new THREE.Scene();
 		scene.add(new THREE.AmbientLight(0x212223));
@@ -38,24 +44,24 @@ var renderPlayer = function(){
 		// renderer.shadowMapType = THREE.PCFShadowMap;
 		renderer.shadowMapType = THREE.PCFSoftShadowMap;
 		document.body.appendChild( renderer.domElement );
-		
+
 		controls = new THREE.OrbitControls( camera, renderer.domElement );
 
 		projector = new THREE.Projector();
 
-    renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );				
+    renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
 
     var gui = new DAT.GUI();
     gui.add(playerControls, 'kickVolumePosition',-0.5,0.5);
     gui.add(playerControls, 'kickKnobPosition',-0.5,0.5);
 
-    // make plane 
+    // make plane
     var geometry = new THREE.PlaneBufferGeometry( 15, 15, 32 );
 		var material = new THREE.MeshLambertMaterial( {color: 0xF4A460, side: THREE.DoubleSide} );
 		var plane = new THREE.Mesh( geometry, material );
 		plane.castShadow = false;
 		plane.receiveShadow = true;
-		plane.position.set(0,0,-0.71)
+		plane.position.set(0,0,-0.71);
 		scene.add( plane );
 
     // make box
@@ -68,7 +74,7 @@ var renderPlayer = function(){
 		scene.add( cube );
     objects.push( cube );
 
-    // make kick buttons 
+    // make kick buttons
 		var button_geometry = new THREE.BoxGeometry( .5, .5, .5 );
 		for(i=0;i < 8; i++){
 			var button_material = new THREE.MeshLambertMaterial( { color: 0x4682B4 } );
@@ -150,9 +156,9 @@ var renderPlayer = function(){
 		directionalLight.shadowCameraNear = 5;
 		directionalLight.shadowCameraFar = 30;
     directionalLight.shadowCameraLeft = -20;
-		directionalLight.shadowCameraRight = 20; 
-		directionalLight.shadowCameraTop = 20; 
-		directionalLight.shadowCameraBottom = -20; 
+		directionalLight.shadowCameraRight = 20;
+		directionalLight.shadowCameraTop = 20;
+		directionalLight.shadowCameraBottom = -20;
 
     directionalLight.shadowMapBias = 0.0039;
     directionalLight.shadowMapDarkness = 0.5;
@@ -186,7 +192,7 @@ var renderPlayer = function(){
 		      kickBuffer = buffer;
 
 		      // set up audio analyser
-					// analyser = context.createAnalyser();			 
+					// analyser = context.createAnalyser();
 					// analyser.fftSize = 2048;                       // set up analyser fourier transform domain
 					// analyser.smoothingTimeConstant = 1; 				   // smooth analyser output
 					// var bufferLength = analyser.frequencyBinCount; // number of data values for visualization
@@ -209,29 +215,38 @@ var renderPlayer = function(){
 		// loadSound("assets/kick.wav");
 	}
 
-  function onDocumentMouseDown( event ) {                
+  function onDocumentMouseDown( event ) {
     var mouse3D = new THREE.Vector3( ( event.clientX / window.innerWidth ) * 2 - 1,   //x
                                     -( event.clientY / window.innerHeight ) * 2 + 1,  //y
                                     0.5 );                                            //z
-    mouse3D.unproject( camera );   
-    mouse3D.sub( camera.position );                
+    mouse3D.unproject( camera );
+    mouse3D.sub( camera.position );
     mouse3D.normalize();
     var raycaster = new THREE.Raycaster( camera.position, mouse3D );
     var intersects = raycaster.intersectObjects( objects );
     // Change color if hit block
+		// sequencer buttons
     if ( intersects.length > 0 && intersects[ 0 ].object.type == "button") {
     		button = intersects[ 0 ].object;
-    		 console.log(button.material.color.getHex());
+    		//  console.log(button.material.color.getHex());
         if (button.material.color.getHex() == "4620980"){
         	bass_buttons[button.bass_button] = 1;
-        	console.log(bass_buttons);
+        	// console.log(bass_buttons);
         	button.material.color.setHex( 0xEEE8AA );
+					// console.log(bass_buttons);
+					var button = {
+						color: button.material.color.getHex(),
+						buttons: bass_buttons
+					};
+					// console.log('hi');
+					socket.emit('change color', button);
         }
         else {
         	bass_buttons[button.bass_button] = 0;
-        	console.log(bass_buttons);
+        	// console.log(bass_buttons);
         	button.material.color.setHex( 0x4682B4 );
         }
+		// play button
     } else if ( intersects.length > 0 && intersects[ 0 ].object.type == "play_button") {
     	button = intersects[ 0 ].object;
         if (button.material.color.getHex() == "14423100"){
@@ -245,6 +260,7 @@ var renderPlayer = function(){
         	playing = false;
         	console.log(playing);
         }
+		// slider
     } else if ( intersects.length > 0 && intersects[ 0 ].object.type == "kick_slider") {
     	button = intersects[ 0 ].object;
         if (button.material.color.getHex() == "14423100"){
@@ -270,5 +286,6 @@ var renderPlayer = function(){
 	}
 
 	render();
+
 
 }
