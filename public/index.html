@@ -5,18 +5,20 @@
 			body { margin: 0; }
 			canvas { width: 100%; height: 100% }
 		</style>
-		<script src="index.js"></script>
 		<script src="https://code.jquery.com/jquery-1.10.2.min.js"></script>
 		<script src="/socket.io/socket.io.js"></script>
-		<script src="three.js"></script>
+		<script type="text/javascript" src="http://threejs.org/build/three.min.js"></script>
 		<script src="DAT.GUI.js"></script>
 		<script src="orbitControls.js"></script>
-		<script src="player.js"></script>
 		<script src="stats.js"></script>
+		<script src="player.js"></script>
 	</head>
 	<body>
 		<script>
-			renderPlayer();
+			var socket = io();
+			socket.on('buttonPushed', function(data) {
+				console.log('client pushed');
+			});
 		</script>
 		<div id="player">
 		</div>

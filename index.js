@@ -1,8 +1,9 @@
 // Setup basic express server
+var debug = require('debug')('http');
 var express = require('express');
 var app = express();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+var server =  require('http').createServer(app);
+var io = require('socket.io', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling'] })(server);
 var port = process.env.PORT || 8080;
 
 server.listen(port, function() {
@@ -79,8 +80,6 @@ io.on('connection', function(socket) {
 
 	socket.on('change color', function(data) {
 		console.log(data);
-		socket.broadcast.emit('button pressed', data);
-		console.log('socket: server sends emit');
+		io.emit("buttonPushed", data);
+		});
 	});
-
-});
