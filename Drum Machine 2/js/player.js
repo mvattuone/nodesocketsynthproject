@@ -1,8 +1,21 @@
+// Set up 'App Wide' Variables 
+
+var App = {
+  Machine: {},
+  Sounds: {}
+};
+
+// Get DOM Element to Attach Canvas 
+
 var container = document.getElementById('container');
 var windowWidth = 500;
 var windowHeight = 500;
 
+// Array of Objects That Will Respond To Click / Drag Events
+
 var objects = [];
+
+// Set up Three.JS Defaults ( Renderer, Camera, Scene )
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, windowWidth/windowHeight, 0.1, 1000 );
@@ -13,15 +26,19 @@ renderer.setClearColor( 0xffffff, 1);
 renderer.setSize( windowWidth, windowHeight );
 container.appendChild( renderer.domElement );
 
+// Event Listeners 
+
 renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );				
 
-var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-var material = new THREE.MeshBasicMaterial( { color: 0x000000 } );
-var cube = new THREE.Mesh( geometry, material );
-scene.add( cube );
-objects.push( cube );
+// Build Drum Machine
 
-camera.position.z = 5;
+drawMachine();
+
+// Set Camera Position
+
+camera.position.z = 7;
+
+// Application Functions
 
 function onDocumentMouseDown( event ) { 
   var mouse3D = new THREE.Vector3( ( event.clientX / windowWidth ) * 2 - 1,   //x
@@ -33,16 +50,14 @@ function onDocumentMouseDown( event ) {
   var raycaster = new THREE.Raycaster( camera.position, mouse3D );
   var intersects = raycaster.intersectObjects( objects );
   if ( intersects.length > 0 ) {
-  	objects[0].material.color.setRGB( Math.random(), Math.random(), Math.random() );
-  	App.Clicks = App.Clicks + 1;
-  	console.log(App.Clicks);
+  	intersects[0].object.click();
   } 
 }
 
+// Logic Loop 
+
 var render = function () {
 	requestAnimationFrame( render );
-	cube.rotation.x += .01;
-	cube.rotation.y += .01;
 	renderer.render(scene, camera);
 };
 
