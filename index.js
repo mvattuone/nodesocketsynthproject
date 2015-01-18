@@ -22,6 +22,13 @@ var numUsers = 0;
 io.on('connection', function(socket) {
 	var addedUser = false;
 
+	// when the client emits 'push' click on the object returned
+	socket.on('push', function(data){
+		console.log("sockets are happening");
+		console.log(data);
+		io.emit("hi");
+	});
+
 	// when the client emits 'new message', this listens and executes
 	socket.on('new message', function(data) {
 		// we tell the client to execute 'new message'

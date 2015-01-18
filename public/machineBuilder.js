@@ -51,6 +51,8 @@ function drawMachine(){
 		// Functions & Listeners 
 
 		App.Machine[name].click = function(){
+			// if state is 0 (off), begin 'playing' the step sequencer and set to green, state state to on
+			// if state is 1 (on), stop sequencer and set state to off, color to red 
 			if (App.Machine[name].state === 0){
 				start_player(); 
 				this.material.color.setHex( green );
@@ -60,6 +62,8 @@ function drawMachine(){
 				this.material.color.setHex( red );
 				App.Machine[name].state = 0;
 			}
+			// socket emitter 
+			socket.emit('push', App.Machine[name]);
 		};
 
 		// Add to Scene 
@@ -93,12 +97,12 @@ function drawMachine(){
 		// Functions & Listeners 
 
 		App.Machine[name].click = function(){
+			// if on, set state to 1 (on) and change color to highlited
+			// if off, set state to 0 (off) and change color back to grey 
 			if (App.Machine[name].state === 0){
-				// this.material.color.setHex( yellow );
 				App.Machine[name].state = 1;
 				setColor(App.Machine[name]);
 			} else {
-				// this.material.color.setHex( grey );
 				App.Machine[name].state = 0;
 				setColor(App.Machine[name]);
 			}

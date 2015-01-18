@@ -24,7 +24,7 @@
 		<script src="player.js"></script>
 		<script>
 			var socket = io();
-			socket.on('buttonPushed', function(data) {
+			socket.on('push', function(data) {
 				console.log('client pushed');
         console.log(data);
 			});
