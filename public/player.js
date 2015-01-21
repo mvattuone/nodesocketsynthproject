@@ -3,12 +3,16 @@
 window.App = {
 	Scene: {},
 	render: function() {
-	requestAnimationFrame( App.render );
-	renderer.render(scene, camera);
+	  requestAnimationFrame( App.render );
+	  renderer.render(scene, camera);
 	}, 
   Machine: {},
   Sounds: {}
 };
+
+// Audio Parameters 
+
+var context = new (window.AudioContext || window.webkitAudioContext)();
 
 // Get DOM Element to Attach Canvas 
 
@@ -41,7 +45,7 @@ drawMachine();
 
 // Set Camera Position
 
-camera.position.z = 7;
+camera.position.z = 13;
 
 // Application Functions
 
