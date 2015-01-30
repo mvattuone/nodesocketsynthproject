@@ -94,6 +94,14 @@ function drawMachine(){
 
 		// Functions & Listeners 
 
+		var socket = io();
+
+		socket.on("clickPlay", function(data) {
+			console.log("heard click s->c");
+			console.log(data);
+			App.Machine.play.clickSocket();
+		});
+
 		App.Machine[name].click = function(){
 			// if state is 0 (off), begin 'playing' the step sequencer and set to green, state state to on
 			// if state is 1 (on), stop sequencer and set state to off, color to red 
@@ -107,7 +115,23 @@ function drawMachine(){
 				App.Machine[name].state = 0;
 			}
 			// socket emitter 
-			socket.emit('push', App.Machine[name]);
+			socket.emit('pushPlay', name);
+		};	
+
+		App.Machine[name].clickSocket = function(){
+			// if state is 0 (off), begin 'playing' the step sequencer and set to green, state state to on
+			// if state is 1 (on), stop sequencer and set state to off, color to red 
+			if (App.Machine[name].state === 0){
+				start_player(); 
+				this.material.color.setHex( green );
+				App.Machine[name].state = 1;
+			} else {
+				stop_player(); 
+				this.material.color.setHex( red );
+				App.Machine[name].state = 0;
+			}
+			// socket emitter 
+			// socket.emit('push', name);
 		};
 
 		// Add to Scene 
@@ -138,7 +162,15 @@ function drawMachine(){
 		App.Machine[name].state = 0;
 		// App.Machine[name].sound = sound;
 
-		// Functions & Listeners 
+		// Functions & Listeners
+
+		var socket = io();
+
+		socket.on("clickSeq", function(data) {
+			console.log("heard click s->c");
+			console.log(data);
+			App.Machine.kick_button_2.clickSocket();
+		}); 
 
 		App.Machine[name].click = function(){
 			// if on, set state to 1 (on) and change color to highlited
@@ -150,6 +182,21 @@ function drawMachine(){
 				App.Machine[name].state = 0;
 				setColor(App.Machine[name]);
 			}
+			socket.emit('pushSeq', name);
+		};	
+		App.Machine[name].clickSocket = function(){
+			console.log("hi");
+			// if on, set state to 1 (on) and change color to highlited
+			// if off, set state to 0 (off) and change color back to grey 
+			console.log(App.Machine[name].state);
+			if (App.Machine[name].state === 0){
+				App.Machine[name].state = 1;
+				setColor(App.Machine[name]);
+			} else {
+				App.Machine[name].state = 0;
+				setColor(App.Machine[name]);
+			}
+			console.log(App.Machine[name].state);
 		};
 
 		// Add Sound 
@@ -289,6 +336,11 @@ function drawMachine(){
 	}
 
 	function setColor(button){
+		console.log("here");
+		console.log(button);
+		console.log(button.state);
+		console.log(yellow);
+		console.log(grey);
 		// check a button's state
 		// set its color accordingly 
 		if (button.state === 1 ){

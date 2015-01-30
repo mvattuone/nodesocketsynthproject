@@ -1,11 +1,11 @@
 // Set up 'App Wide' Variables 
 
 window.App = {
-	Scene: {},
-	render: function() {
-	  requestAnimationFrame( App.render );
-	  renderer.render(scene, camera);
-	}, 
+  Scene: {},
+  render: function() {
+    requestAnimationFrame( App.render );
+    renderer.render(scene, camera);
+  }, 
   Machine: {},
   Sounds: {}
 };
@@ -28,7 +28,7 @@ var objects = [];
 
 var scene = new THREE.Scene();
 var camera = new THREE.PerspectiveCamera( 75, windowWidth/windowHeight, 0.1, 1000 );
-var	projector = new THREE.Projector();
+var projector = new THREE.Projector();
 
 var renderer = new THREE.WebGLRenderer({ alpha: true });
 renderer.setClearColor( 0xffffff, 1);
@@ -37,7 +37,7 @@ container.appendChild( renderer.domElement );
 
 // Event Listeners 
 
-renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );				
+renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );        
 
 // Build Drum Machine
 
@@ -59,7 +59,6 @@ function onDocumentMouseDown( event ) {
   var raycaster = new THREE.Raycaster( camera.position, mouse3D );
   var intersects = raycaster.intersectObjects( objects );
   if ( intersects.length > 0 ) {
-  	intersects[0].object.click();
+    intersects[0].object.click();
   } 
 };
-

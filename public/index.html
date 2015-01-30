@@ -4,7 +4,6 @@
 		<style>
 			body { margin: 0; }
 			canvas { width: 100%; height: 100% }
-
 			#container {
 		    width: 500px;
 		    height: 500px;
@@ -24,11 +23,6 @@
     <script src="machineBuilder.js"></script>
 		<script src="player.js"></script>
 		<script>
-			var socket = io();
-			socket.on('push', function(data) {
-				console.log('client pushed');
-        console.log(data);
-			});
 			App.render(function(data) {
 				console.log(data);
 			}); 

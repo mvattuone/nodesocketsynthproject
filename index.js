@@ -23,10 +23,15 @@ io.on('connection', function(socket) {
 	var addedUser = false;
 
 	// when the client emits 'push' click on the object returned
-	socket.on('push', function(data){
-		console.log("sockets are happening");
+	socket.on('pushPlay', function(data){
+		socket.broadcast.emit("clickPlay", data);
+		console.log("pushPlay");
+	});
+
+	socket.on('pushSeq', function(data){
+		socket.broadcast.emit("clickSeq", data);
 		console.log(data);
-		io.emit("hi");
+		console.log("pushSeq");
 	});
 
 	// when the client emits 'new message', this listens and executes
