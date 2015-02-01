@@ -2,6 +2,74 @@ function drawMachine(){
 
 	// Parameters
 
+	var socket = io(); 
+
+	// Socket Listeners
+
+	socket.on("Seqclick", function(data) {
+		// console.log("heard click s->c");
+		// console.log(data);
+		console.log("hi");
+		// console.log(data);
+		App.Machine[data].clickSocket(); 
+		// consolecheck(data);
+	}); 
+
+	socket.on("getCurrentState", function(){
+		var snare_buttons_state = snare_buttons.map(function(snare_button){
+			return snare_button.state;
+		})
+		var kick_buttons_state = kick_buttons.map(function(kick_button){
+			return kick_button.state;
+		})
+		var high_hat_buttons_state = high_hat_buttons.map(function(high_hat_button){
+			return high_hat_button.state;
+		})
+		var high_hat_open_buttons_state = high_hat_open_buttons.map(function(high_hat_open_button){
+			return high_hat_open_button.state;
+		})
+		var data = {snare_buttons_state: snare_buttons_state, kick_buttons_state: kick_buttons_state, high_hat_buttons_state: high_hat_buttons_state, high_hat_open_buttons_state: high_hat_open_buttons_state};
+		socket.emit("currentState", data); 
+	});
+
+	socket.on('updateState', function(data){
+		console.log('update the state on load');
+
+		var snare = data.snare_buttons_state;
+		snare.forEach(function(state, index){
+			console.log(snare_buttons[index]);			
+			if(state === 1){
+					snare_buttons[index].clickSocket();
+			}
+		})
+
+		var kick = data.kick_buttons_state;
+		kick.forEach(function(state, index){
+			console.log(kick_buttons[index]);			
+			if(state === 1){
+					kick_buttons[index].clickSocket();
+			}
+		})
+
+		var high_hat = data.high_hat_buttons_state;
+		high_hat.forEach(function(state, index){
+			console.log(high_hat_buttons[index]);			
+			if(state === 1){
+					high_hat_buttons[index].clickSocket();
+			}
+		})
+
+		var high_hat_open = data.high_hat_open_buttons_state;
+		high_hat_open.forEach(function(state, index){
+			console.log(high_hat_open_buttons[index]);			
+			if(state === 1){
+					high_hat_open_buttons[index].clickSocket();
+			}
+		})
+
+
+	})
+
 	var bpm = 128;
 	var quarter_note = calculateQuarterNote(bpm);
 	var sixteenth_note = calculateSixteenthNote(quarter_note);
@@ -70,6 +138,7 @@ function drawMachine(){
 	high_hat_open_button_7 = drawButton(6, 0, 0, "high_hat_open_button_7", getHighHatOpen, 'high_hat_open', high_hat_open_buttons);
 	high_hat_open_button_8 = drawButton(8, 0, 0, "high_hat_open_button_8", getHighHatOpen, 'high_hat_open', high_hat_open_buttons);
 
+
 	// set initial state
 
 	App.Machine.kick_selector.click();
@@ -91,10 +160,11 @@ function drawMachine(){
 		// Set Parameters 
 
 		App.Machine[name].state = 0;
+		App.Machine[name].name = name;
 
 		// Functions & Listeners 
 
-		var socket = io();
+		// var socket = io();
 
 		socket.on("clickPlay", function(data) {
 			console.log("heard click s->c");
@@ -105,15 +175,15 @@ function drawMachine(){
 		App.Machine[name].click = function(){
 			// if state is 0 (off), begin 'playing' the step sequencer and set to green, state state to on
 			// if state is 1 (on), stop sequencer and set state to off, color to red 
-			if (App.Machine[name].state === 0){
-				start_player(); 
-				this.material.color.setHex( green );
-				App.Machine[name].state = 1;
-			} else {
-				stop_player(); 
-				this.material.color.setHex( red );
-				App.Machine[name].state = 0;
-			}
+			// if (App.Machine[name].state === 0){
+			// 	start_player(); 
+			// 	this.material.color.setHex( green );
+			// 	App.Machine[name].state = 1;
+			// } else {
+			// 	stop_player(); 
+			// 	this.material.color.setHex( red );
+			// 	App.Machine[name].state = 0;
+			// }
 			// socket emitter 
 			socket.emit('pushPlay', name);
 		};	
@@ -160,21 +230,26 @@ function drawMachine(){
 
 		App.Machine[name].name = name;
 		App.Machine[name].state = 0;
+
 		// App.Machine[name].sound = sound;
 
 		// Functions & Listeners
 
-		var socket = io();
+		// var socket = io();
 
-		socket.on("Seqclick", function(data) {
-			// console.log("heard click s->c");
+		// App.Machine[name].socket = io(); 
+
+		// socket.on("Seqclick", function(data) {
+		// 	// console.log("heard click s->c");
+		// 	// console.log(data);
+		// 	console.log("hi");
+		// 	// console.log(data);
+		// 	consolecheck(data);
+		// }); 
+
+		consolecheck = function(data) {
+			// console.log("check");
 			// console.log(data);
-			console.log("hi");
-			consolecheck();
-		}); 
-
-		consolecheck = function() {
-			console.log("check");
 			return;
 		};
 
@@ -192,16 +267,16 @@ function drawMachine(){
 		};	
 
 		App.Machine[name].clickSocket = function(){
-			console.log("hi");
+			// console.log("hi");
 			// if on, set state to 1 (on) and change color to highlited
 			// if off, set state to 0 (off) and change color back to grey 
-			// if (App.Machine[name].state === 0){
-			// 	App.Machine[name].state = 1;
-			// 	setColor(App.Machine[name]);
-			// } else {
-			// 	App.Machine[name].state = 0;
-			// 	setColor(App.Machine[name]);
-			// }
+			if (App.Machine[name].state === 0){
+				App.Machine[name].state = 1;
+				setColor(App.Machine[name]);
+			} else {
+				App.Machine[name].state = 0;
+				setColor(App.Machine[name]);
+			}
 		};
 
 		// Add Sound 

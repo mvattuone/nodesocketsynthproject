@@ -62,3 +62,4 @@ function onDocumentMouseDown( event ) {
     intersects[0].object.click();
   } 
 };
+

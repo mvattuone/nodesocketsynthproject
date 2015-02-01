@@ -22,9 +22,17 @@ var numUsers = 0;
 io.on('connection', function(socket) {
 	var addedUser = false;
 
+	socket.broadcast.emit('getCurrentState');
+
+	socket.on('currentState', function(data){
+		console.log(data);
+		socket.broadcast.emit('updateState', data);
+	})
+
 	// when the client emits 'push' click on the object returned
 	socket.on('pushPlay', function(data){
 		socket.broadcast.emit("clickPlay", data);
+		socket.emit("clickPlay", data);
 		console.log("pushPlay");
 	});
 
