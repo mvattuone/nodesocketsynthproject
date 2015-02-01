@@ -166,37 +166,42 @@ function drawMachine(){
 
 		var socket = io();
 
-		socket.on("clickSeq", function(data) {
-			console.log("heard click s->c");
-			console.log(data);
-			App.Machine.kick_button_2.clickSocket();
+		socket.on("Seqclick", function(data) {
+			// console.log("heard click s->c");
+			// console.log(data);
+			console.log("hi");
+			consolecheck();
 		}); 
+
+		consolecheck = function() {
+			console.log("check");
+			return;
+		};
 
 		App.Machine[name].click = function(){
 			// if on, set state to 1 (on) and change color to highlited
 			// if off, set state to 0 (off) and change color back to grey 
-			if (App.Machine[name].state === 0){
-				App.Machine[name].state = 1;
-				setColor(App.Machine[name]);
-			} else {
-				App.Machine[name].state = 0;
-				setColor(App.Machine[name]);
-			}
+			// if (App.Machine[name].state === 0){
+			// 	App.Machine[name].state = 1;
+			// 	setColor(App.Machine[name]);
+			// } else {
+			// 	App.Machine[name].state = 0;
+			// 	setColor(App.Machine[name]);
+			// }
 			socket.emit('pushSeq', name);
 		};	
+
 		App.Machine[name].clickSocket = function(){
 			console.log("hi");
 			// if on, set state to 1 (on) and change color to highlited
 			// if off, set state to 0 (off) and change color back to grey 
-			console.log(App.Machine[name].state);
-			if (App.Machine[name].state === 0){
-				App.Machine[name].state = 1;
-				setColor(App.Machine[name]);
-			} else {
-				App.Machine[name].state = 0;
-				setColor(App.Machine[name]);
-			}
-			console.log(App.Machine[name].state);
+			// if (App.Machine[name].state === 0){
+			// 	App.Machine[name].state = 1;
+			// 	setColor(App.Machine[name]);
+			// } else {
+			// 	App.Machine[name].state = 0;
+			// 	setColor(App.Machine[name]);
+			// }
 		};
 
 		// Add Sound 
@@ -336,11 +341,6 @@ function drawMachine(){
 	}
 
 	function setColor(button){
-		console.log("here");
-		console.log(button);
-		console.log(button.state);
-		console.log(yellow);
-		console.log(grey);
 		// check a button's state
 		// set its color accordingly 
 		if (button.state === 1 ){

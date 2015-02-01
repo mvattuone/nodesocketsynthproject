@@ -28,10 +28,13 @@ io.on('connection', function(socket) {
 		console.log("pushPlay");
 	});
 
+	// when the client emits 'pushSeq' this listens and executes
 	socket.on('pushSeq', function(data){
-		socket.broadcast.emit("clickSeq", data);
-		console.log(data);
-		console.log("pushSeq");
+		socket.emit("Seqclick", data, function(error, message) {
+			console.log(error);
+			console.log(message);
+		});
+		socket.broadcast.emit("Seqclick", data);
 	});
 
 	// when the client emits 'new message', this listens and executes
