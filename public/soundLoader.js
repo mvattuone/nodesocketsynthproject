@@ -2,7 +2,7 @@ function getKick() {
   App.Sounds['kick'] = context.createBufferSource();
   var request = new XMLHttpRequest();
 
-  request.open('GET', 'kick.wav', true);
+  request.open('GET', '/samples/kick.wav', true);
 
   request.responseType = 'arraybuffer';
 
@@ -25,7 +25,7 @@ function getSnare() {
   App.Sounds['snare'] = context.createBufferSource();
   var request = new XMLHttpRequest();
 
-  request.open('GET', 'snare.wav', true);
+  request.open('GET', '/samples/snare.wav', true);
 
   request.responseType = 'arraybuffer';
 
@@ -48,7 +48,7 @@ function getHighHat() {
   App.Sounds['high_hat'] = context.createBufferSource();
   var request = new XMLHttpRequest();
 
-  request.open('GET', 'high_hat.wav', true);
+  request.open('GET', '/samples/high_hat.wav', true);
 
   request.responseType = 'arraybuffer';
 
@@ -71,7 +71,7 @@ function getHighHatOpen() {
   App.Sounds['high_hat_open'] = context.createBufferSource();
   var request = new XMLHttpRequest();
 
-  request.open('GET', 'high_hat_open.wav', true);
+  request.open('GET', '/samples/high_hat_open.wav', true);
 
   request.responseType = 'arraybuffer';
 
