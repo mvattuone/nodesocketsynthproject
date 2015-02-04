@@ -6,6 +6,15 @@ var server =  require('http').createServer(app);
 var io = require('socket.io', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling'] })(server);
 var port = process.env.PORT || 8080;
 
+// // Setup mongodb w/ mongoose for schema
+// var mongoose = require('mongoose');
+// mongoose.connect('mongodb://localhost/test');
+// var db = mongoose.connection;
+// db.on('error', console.error.bing(console, 'connection error:'));
+// db.once('open', function(callback) {
+// 	console.log("connection to db open");
+// })
+
 server.listen(port, function() {
 	console.log('Server listening at port %d', port);
 });
@@ -18,31 +27,60 @@ app.use(express.static(__dirname + '/public'));
 // username which are currently connected to the chat
 var usernames = {};
 var numUsers = 0;
+	var currentState = {
+		play: 0,
+		currentStep: 0,
+		kick: [0, 0, 0, 0, 0, 0, 0, 0],
+		snare: [0, 0, 0, 0, 0, 0, 0, 0],
+		hh: [0, 0, 0, 0, 0, 0, 0, 0],
+		hho: [0, 0, 0, 0, 0, 0, 0, 0]
+	};
 
 io.on('connection', function(socket) {
 	var addedUser = false;
 
-	socket.broadcast.emit('getCurrentState');
+
+	socket.emit("currentState", currentState);
+	socket.emit("updateState", currentState);
+
+	// socket.broadcast.emit('getCurrentState');
 
 	socket.on('currentState', function(data){
 		console.log(data);
 		socket.broadcast.emit('updateState', data);
+		socket.emit('updateState', data);
 	})
 
 	// when the client emits 'push' click on the object returned
 	socket.on('pushPlay', function(data){
-		socket.broadcast.emit("clickPlay", data);
-		socket.emit("clickPlay", data);
+		if (currentState.play === 1) {
+			currentState.play = 0;
+			currentState.currentStep = 0;
+		} else { currentState.play = 1 }
+		socket.broadcast.emit("updateState", currentState);
+		socket.emit("updateState", currentState);
 		console.log("pushPlay");
 	});
 
 	// when the client emits 'pushSeq' this listens and executes
 	socket.on('pushSeq', function(data){
-		socket.emit("Seqclick", data, function(error, message) {
-			console.log(error);
-			console.log(message);
-		});
-		socket.broadcast.emit("Seqclick", data);
+		// if currentState.
+		var array = data.array;
+		var step_position = data.name;
+		if (currentState[array][step_position] === 1) {
+			currentState[array][step_position] = 0
+		} else { currentState[array][step_position] = 1}
+		socket.emit("updateState", currentState);
+		socket.broadcast.emit("updateState", currentState);
+
+		// debugger;
+		// var array_name = data.array
+		// var step_position = data.name
+		// if (currentState.array_name.step_position === 0) {
+		// 	currentState.array_name.step_position = 1;
+		// } else if (currentState.array_name.step_position === 1) {
+		// 	currentState.array_name.step_position = 0;
+		// }
 	});
 
 	// when the client emits 'new message', this listens and executes

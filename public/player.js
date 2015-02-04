@@ -59,6 +59,7 @@ function onDocumentMouseDown( event ) {
   var raycaster = new THREE.Raycaster( camera.position, mouse3D );
   var intersects = raycaster.intersectObjects( objects );
   if ( intersects.length > 0 ) {
+    // console.log(mouse3D);
     intersects[0].object.click();
   } 
 };

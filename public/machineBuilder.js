@@ -9,11 +9,15 @@ function drawMachine(){
 	socket.on("Seqclick", function(data) {
 		// console.log("heard click s->c");
 		// console.log(data);
-		console.log("hi");
+		// console.log("hi");
 		// console.log(data);
 		App.Machine[data].clickSocket(); 
 		// consolecheck(data);
 	}); 
+
+	socket.on("currentState", function(data) {
+		console.log(data);
+	})
 
 	socket.on("getCurrentState", function(){
 		var snare_buttons_state = snare_buttons.map(function(snare_button){
@@ -32,37 +36,43 @@ function drawMachine(){
 		socket.emit("currentState", data); 
 	});
 
+
 	socket.on('updateState', function(data){
 		console.log('update the state on load');
 
-		var snare = data.snare_buttons_state;
+		var play = data.play
+		if (play !== App.Machine.play.state) {
+			App.Machine.play.clickSocket();
+		}
+
+		var snare = data.snare;
 		snare.forEach(function(state, index){
-			console.log(snare_buttons[index]);			
-			if(state === 1){
+			// console.log(snare_buttons[index]);
+			if(state !== snare_buttons[index].state){
 					snare_buttons[index].clickSocket();
 			}
 		})
 
-		var kick = data.kick_buttons_state;
+		var kick = data.kick;
 		kick.forEach(function(state, index){
-			console.log(kick_buttons[index]);			
-			if(state === 1){
+			// console.log(kick_buttons[index]);			
+			if(state !== kick_buttons[index].state){
 					kick_buttons[index].clickSocket();
 			}
 		})
 
-		var high_hat = data.high_hat_buttons_state;
+		var high_hat = data.hh;
 		high_hat.forEach(function(state, index){
-			console.log(high_hat_buttons[index]);			
-			if(state === 1){
+			// console.log(high_hat_buttons[index]);			
+			if(state !== high_hat_buttons[index].state){
 					high_hat_buttons[index].clickSocket();
 			}
 		})
 
-		var high_hat_open = data.high_hat_open_buttons_state;
+		var high_hat_open = data.hho;
 		high_hat_open.forEach(function(state, index){
-			console.log(high_hat_open_buttons[index]);			
-			if(state === 1){
+			// console.log(high_hat_open_buttons[index]);			
+			if(state !== high_hat_open_buttons[index].state){
 					high_hat_open_buttons[index].clickSocket();
 			}
 		})
@@ -77,7 +87,7 @@ function drawMachine(){
 	var play_button = [];
 
 	var snare_buttons = [];
-	var kick_buttons = [];
+	kick_buttons = [];
 	var high_hat_buttons = [];
 	var high_hat_open_buttons = [];
 
@@ -99,44 +109,44 @@ function drawMachine(){
 	play = drawPlay(-8, 0, 0, "play");
 
 	kick_selector = drawSelector(-6, 1, 0, "kick_selector", kick_buttons);
-	kick_button_1 = drawButton(-6, 0, 0, "kick_button_1", getKick, 'kick', kick_buttons);
-	kick_button_2 = drawButton(-4, 0, 0, "kick_button_2", getKick, 'kick', kick_buttons);
-	kick_button_3 = drawButton(-2, 0, 0, "kick_button_3", getKick, 'kick', kick_buttons);
-	kick_button_4 = drawButton(0, 0, 0, "kick_button_4", getKick, 'kick', kick_buttons);
-	kick_button_5 = drawButton(2, 0, 0, "kick_button_5", getKick, 'kick', kick_buttons);
-	kick_button_6 = drawButton(4, 0, 0, "kick_button_6", getKick, 'kick', kick_buttons);
-	kick_button_7 = drawButton(6, 0, 0, "kick_button_7", getKick, 'kick', kick_buttons);
-	kick_button_8 = drawButton(8, 0, 0, "kick_button_8", getKick, 'kick', kick_buttons);
+	kick_button_1 = drawButton(-6, 0, 0, "kick_button_1", 0, getKick, 'kick', kick_buttons, "kick");
+	kick_button_2 = drawButton(-4, 0, 0, "kick_button_2", 1, getKick, 'kick', kick_buttons, "kick");
+	kick_button_3 = drawButton(-2, 0, 0, "kick_button_3", 2, getKick, 'kick', kick_buttons, "kick");
+	kick_button_4 = drawButton(0, 0, 0, "kick_button_4", 3, getKick, 'kick', kick_buttons, "kick");
+	kick_button_5 = drawButton(2, 0, 0, "kick_button_5", 4, getKick, 'kick', kick_buttons, "kick");
+	kick_button_6 = drawButton(4, 0, 0, "kick_button_6", 5, getKick, 'kick', kick_buttons, "kick");
+	kick_button_7 = drawButton(6, 0, 0, "kick_button_7", 6, getKick, 'kick', kick_buttons, "kick");
+	kick_button_8 = drawButton(8, 0, 0, "kick_button_8", 7, getKick, 'kick', kick_buttons, "kick");
 
 	snare_selector = drawSelector(-4, 1, 0, "snare_selector", snare_buttons);
-	snare_button_1 = drawButton(-6, 0, 0, "snare_button_1", getSnare, 'snare', snare_buttons);
-	snare_button_2 = drawButton(-4, 0, 0, "snare_button_2", getSnare, 'snare', snare_buttons);
-	snare_button_3 = drawButton(-2, 0, 0, "snare_button_3", getSnare, 'snare', snare_buttons);
-	snare_button_4 = drawButton(0, 0, 0, "snare_button_4", getSnare, 'snare', snare_buttons);
-	snare_button_5 = drawButton(2, 0, 0, "snare_button_5", getSnare, 'snare', snare_buttons);
-	snare_button_6 = drawButton(4, 0, 0, "snare_button_6", getSnare, 'snare', snare_buttons);
-	snare_button_7 = drawButton(6, 0, 0, "snare_button_7", getSnare, 'snare', snare_buttons);
-	snare_button_8 = drawButton(8, 0, 0, "snare_button_8", getSnare, 'snare', snare_buttons);
+	snare_button_1 = drawButton(-6, 0, 0, "snare_button_1", 0,  getSnare, 'snare', snare_buttons, "snare");
+	snare_button_2 = drawButton(-4, 0, 0, "snare_button_2", 1, getSnare, 'snare', snare_buttons, "snare");
+	snare_button_3 = drawButton(-2, 0, 0, "snare_button_3", 2, getSnare, 'snare', snare_buttons, "snare");
+	snare_button_4 = drawButton(0, 0, 0, "snare_button_4", 3, getSnare, 'snare', snare_buttons, "snare");
+	snare_button_5 = drawButton(2, 0, 0, "snare_button_5", 4, getSnare, 'snare', snare_buttons, "snare");
+	snare_button_6 = drawButton(4, 0, 0, "snare_button_6", 5, getSnare, 'snare', snare_buttons, "snare");
+	snare_button_7 = drawButton(6, 0, 0, "snare_button_7", 6, getSnare, 'snare', snare_buttons, "snare");
+	snare_button_8 = drawButton(8, 0, 0, "snare_button_8", 7, getSnare, 'snare', snare_buttons, "snare");
 
 	high_hat_selector = drawSelector(-2, 1, 0, "high_hat_selector", high_hat_buttons);
-	high_hat_button_1 = drawButton(-6, 0, 0, "high_hat_button_1", getHighHat, 'high_hat', high_hat_buttons);
-	high_hat_button_2 = drawButton(-4, 0, 0, "high_hat_button_2", getHighHat, 'high_hat', high_hat_buttons);
-	high_hat_button_3 = drawButton(-2, 0, 0, "high_hat_button_3", getHighHat, 'high_hat', high_hat_buttons);
-	high_hat_button_4 = drawButton(0, 0, 0, "high_hat_button_4", getHighHat, 'high_hat', high_hat_buttons);
-	high_hat_button_5 = drawButton(2, 0, 0, "high_hat_button_5", getHighHat, 'high_hat', high_hat_buttons);
-	high_hat_button_6 = drawButton(4, 0, 0, "high_hat_button_6", getHighHat, 'high_hat', high_hat_buttons);
-	high_hat_button_7 = drawButton(6, 0, 0, "high_hat_button_7", getHighHat, 'high_hat', high_hat_buttons);
-	high_hat_button_8 = drawButton(8, 0, 0, "high_hat_button_8", getHighHat, 'high_hat', high_hat_buttons);
+	high_hat_button_1 = drawButton(-6, 0, 0, "high_hat_button_1", 0, getHighHat, 'high_hat', high_hat_buttons, "hh");
+	high_hat_button_2 = drawButton(-4, 0, 0, "high_hat_button_2", 1, getHighHat, 'high_hat', high_hat_buttons, "hh");
+	high_hat_button_3 = drawButton(-2, 0, 0, "high_hat_button_3", 2, getHighHat, 'high_hat', high_hat_buttons, "hh");
+	high_hat_button_4 = drawButton(0, 0, 0, "high_hat_button_4", 3, getHighHat, 'high_hat', high_hat_buttons, "hh");
+	high_hat_button_5 = drawButton(2, 0, 0, "high_hat_button_5", 4, getHighHat, 'high_hat', high_hat_buttons, "hh");
+	high_hat_button_6 = drawButton(4, 0, 0, "high_hat_button_6", 5, getHighHat, 'high_hat', high_hat_buttons, "hh");
+	high_hat_button_7 = drawButton(6, 0, 0, "high_hat_button_7", 6, getHighHat, 'high_hat', high_hat_buttons, "hh");
+	high_hat_button_8 = drawButton(8, 0, 0, "high_hat_button_8", 7, getHighHat, 'high_hat', high_hat_buttons, "hh");
 
 	high_hat_open_selector = drawSelector(0, 1, 0, "high_hat_open_selector", high_hat_open_buttons);
-	high_hat_open_button_1 = drawButton(-6, 0, 0, "high_hat_open_button_1", getHighHatOpen, 'high_hat_open', high_hat_open_buttons);
-	high_hat_open_button_2 = drawButton(-4, 0, 0, "high_hat_open_button_2", getHighHatOpen, 'high_hat_open', high_hat_open_buttons);
-	high_hat_open_button_3 = drawButton(-2, 0, 0, "high_hat_open_button_3", getHighHatOpen, 'high_hat_open', high_hat_open_buttons);
-	high_hat_open_button_4 = drawButton(0, 0, 0, "high_hat_open_button_4", getHighHatOpen, 'high_hat_open', high_hat_open_buttons);
-	high_hat_open_button_5 = drawButton(2, 0, 0, "high_hat_open_button_5", getHighHatOpen, 'high_hat_open', high_hat_open_buttons);
-	high_hat_open_button_6 = drawButton(4, 0, 0, "high_hat_open_button_6", getHighHatOpen, 'high_hat_open', high_hat_open_buttons);
-	high_hat_open_button_7 = drawButton(6, 0, 0, "high_hat_open_button_7", getHighHatOpen, 'high_hat_open', high_hat_open_buttons);
-	high_hat_open_button_8 = drawButton(8, 0, 0, "high_hat_open_button_8", getHighHatOpen, 'high_hat_open', high_hat_open_buttons);
+	high_hat_open_button_1 = drawButton(-6, 0, 0, "high_hat_open_button_1", 0, getHighHatOpen, 'high_hat_open', high_hat_open_buttons, "hho");
+	high_hat_open_button_2 = drawButton(-4, 0, 0, "high_hat_open_button_2", 1, getHighHatOpen, 'high_hat_open', high_hat_open_buttons, "hho");
+	high_hat_open_button_3 = drawButton(-2, 0, 0, "high_hat_open_button_3", 2, getHighHatOpen, 'high_hat_open', high_hat_open_buttons, "hho");
+	high_hat_open_button_4 = drawButton(0, 0, 0, "high_hat_open_button_4", 3, getHighHatOpen, 'high_hat_open', high_hat_open_buttons, "hho");
+	high_hat_open_button_5 = drawButton(2, 0, 0, "high_hat_open_button_5", 4, getHighHatOpen, 'high_hat_open', high_hat_open_buttons, "hho");
+	high_hat_open_button_6 = drawButton(4, 0, 0, "high_hat_open_button_6", 5, getHighHatOpen, 'high_hat_open', high_hat_open_buttons, "hho");
+	high_hat_open_button_7 = drawButton(6, 0, 0, "high_hat_open_button_7", 6, getHighHatOpen, 'high_hat_open', high_hat_open_buttons, "hho");
+	high_hat_open_button_8 = drawButton(8, 0, 0, "high_hat_open_button_8", 7, getHighHatOpen, 'high_hat_open', high_hat_open_buttons, "hho");
 
 
 	// set initial state
@@ -172,19 +182,8 @@ function drawMachine(){
 			App.Machine.play.clickSocket();
 		});
 
+
 		App.Machine[name].click = function(){
-			// if state is 0 (off), begin 'playing' the step sequencer and set to green, state state to on
-			// if state is 1 (on), stop sequencer and set state to off, color to red 
-			// if (App.Machine[name].state === 0){
-			// 	start_player(); 
-			// 	this.material.color.setHex( green );
-			// 	App.Machine[name].state = 1;
-			// } else {
-			// 	stop_player(); 
-			// 	this.material.color.setHex( red );
-			// 	App.Machine[name].state = 0;
-			// }
-			// socket emitter 
 			socket.emit('pushPlay', name);
 		};	
 
@@ -212,9 +211,10 @@ function drawMachine(){
 		
 	};
 
-	function drawButton(x, y, z, name, getSound, sound, array){
+	function drawButton(x, y, z, name, step_position, getSound, sound, array, array_name){
 		
 		// Geometry and Material
+
 
 		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
 		var material = new THREE.MeshBasicMaterial( { color: grey } );
@@ -228,8 +228,9 @@ function drawMachine(){
 
 		// Set Parameters 
 
-		App.Machine[name].name = name;
+		App.Machine[name].name = ""+name+"_"+step_position;
 		App.Machine[name].state = 0;
+		App.Machine[name].step_position = step_position;
 
 		// App.Machine[name].sound = sound;
 
@@ -254,16 +255,7 @@ function drawMachine(){
 		};
 
 		App.Machine[name].click = function(){
-			// if on, set state to 1 (on) and change color to highlited
-			// if off, set state to 0 (off) and change color back to grey 
-			// if (App.Machine[name].state === 0){
-			// 	App.Machine[name].state = 1;
-			// 	setColor(App.Machine[name]);
-			// } else {
-			// 	App.Machine[name].state = 0;
-			// 	setColor(App.Machine[name]);
-			// }
-			socket.emit('pushSeq', name);
+			socket.emit('pushSeq', {array: array_name, name: App.Machine[name].step_position});
 		};	
 
 		App.Machine[name].clickSocket = function(){
