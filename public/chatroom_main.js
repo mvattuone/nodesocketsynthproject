@@ -28,9 +28,9 @@ $(function() {
   function addParticipantsMessage (data) {
     var message = '';
     if (data.numUsers === 1) {
-      message += "there's 1 participant";
+      message += "You're alone in here! Collaboration lacking is..";
     } else {
-      message += "there are " + data.numUsers + " participants";
+      message += "there are " + data.numUsers + " radical participants";
     }
     log(message);
   }
@@ -229,7 +229,7 @@ $(function() {
   socket.on('login', function (data) {
     connected = true;
     // Display the welcome message
-    var message = "Welcome to nodeSynth Project Chat – ";
+    var message = "Yo welcome to IanOdron";
     log(message, {
       prepend: true
     });
