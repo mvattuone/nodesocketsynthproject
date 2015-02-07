@@ -33,12 +33,23 @@ var numUsers = 0;
 		kick: [0, 0, 0, 0, 0, 0, 0, 0],
 		snare: [0, 0, 0, 0, 0, 0, 0, 0],
 		hh: [0, 0, 0, 0, 0, 0, 0, 0],
-		hho: [0, 0, 0, 0, 0, 0, 0, 0]
+		hho: [0, 0, 0, 0, 0, 0, 0, 0],
+		clap: [0, 0, 0, 0, 0, 0, 0, 0],
+		tom: [0, 0, 0, 0, 0, 0, 0, 0],
+		cowbell: [0, 0, 0, 0, 0, 0, 0, 0],
+		shaker: [0, 0, 0, 0, 0, 0, 0, 0],
+		kickSlider: 0,
+		snareSlider: 0,
+		hhSlider: 0,
+		hhoSlider: 0,
+		clapSlider: 0,
+		tomSlider: 0,
+		cowbellSlider: 0,
+		shakerSlider: 0
 	};
 
 io.on('connection', function(socket) {
 	var addedUser = false;
-
 
 	socket.emit("currentState", currentState);
 	socket.emit("updateState", currentState);
@@ -59,7 +70,7 @@ io.on('connection', function(socket) {
 		} else { currentState.play = 1 }
 		socket.broadcast.emit("updateState", currentState);
 		socket.emit("updateState", currentState);
-		console.log("pushPlay");
+		// console.log("pushPlay");
 	});
 
 	// when the client emits 'pushSeq' this listens and executes
@@ -82,6 +93,20 @@ io.on('connection', function(socket) {
 		// 	currentState.array_name.step_position = 0;
 		// }
 	});
+
+	socket.on('nextStep', function(data) {
+		var current_step = data['passed_step'];
+		var current_visible_length = data[current_visible_length];
+		if (current_step === 7 ){
+			currentState.currentStep = 0;
+			console.log('yes');
+		} else {
+			currentState.currentStep = current_step + 1;
+			console.log(current_step);
+		}
+		socket.emit("updateState", currentState);
+		socket.broadcast.emit("updateState", currentState);
+	})
 
 	// when the client emits 'new message', this listens and executes
 	socket.on('new message', function(data) {
@@ -140,7 +165,7 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('change color', function(data) {
-		console.log(data);
+		// console.log(data);
 		io.emit("buttonPushed", data);
 		});
 	});
