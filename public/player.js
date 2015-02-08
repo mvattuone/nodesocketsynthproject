@@ -41,15 +41,9 @@ container.appendChild( renderer.domElement );
 
 // Event Listeners
 
-<<<<<<< HEAD
-renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
-||||||| merged common ancestors
-renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );        
-=======
 renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );        
 renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );        
 renderer.domElement.addEventListener( 'mouseup', onDocumentMouseUp, false );        
->>>>>>> 25d37ef73aa1d483ff8eb03049b686b246c0d9e5
 
 // Build Drum Machine
 
