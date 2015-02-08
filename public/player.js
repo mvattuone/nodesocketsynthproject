@@ -141,4 +141,3 @@ function onDocumentMouseUp( event ) {
   active_object.click(); 
   active_object = null;
 }
-
