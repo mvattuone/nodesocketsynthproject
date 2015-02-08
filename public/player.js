@@ -33,7 +33,9 @@ var camera = new THREE.PerspectiveCamera( 75, windowWidth/windowHeight, 0.1, 100
 var projector = new THREE.Projector();
 
 var renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setClearColor( 0xffffff, 1);
+renderer.setClearColor( 0xecf0f1, 1);
+renderer.shadowMapEnabled = true;
+renderer.shadowMapType = THREE.PCFSoftShadowMap;
 renderer.setSize( windowWidth, windowHeight );
 container.appendChild( renderer.domElement );
 

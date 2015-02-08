@@ -7,12 +7,7 @@ function drawMachine(){
 	// Socket Listeners
 
 	socket.on("Seqclick", function(data) {
-		// console.log("heard click s->c");
-		// console.log(data);
-		// console.log("hi");
-		// console.log(data);
 		App.Machine[data].clickSocket(); 
-		// consolecheck(data);
 	}); 
 
 	socket.on("getCurrentState", function(){
@@ -66,10 +61,6 @@ function drawMachine(){
 		if (play !== App.Machine.play.state) {
 			App.Machine.play.clickSocket();
 		}
-
-		// var step_position_temporary = data.currentStep; 
-		// console.log("step position temporary is: "+step_position_temporary);
-		// current_step = step_position_temporary; 
 
 		var snare = data.snare;
 		snare.forEach(function(state, index){
@@ -128,82 +119,66 @@ function drawMachine(){
 		})
 
 		if (App.Machine.kick_slider.state !== data.kick_slider){
-			// console.log(data.kick_slider);
 			App.Machine.kick_slider.setPosition(data.kick_slider);
 		}
 
 		if (App.Machine.snare_slider.state !== data.snare_slider){
-			// console.log(data.snare_slider);
 			App.Machine.snare_slider.setPosition(data.snare_slider);
 		}
 
 		if (App.Machine.high_hat_slider.state !== data.high_hat_slider){
-			// console.log(data.high_hat_slider);
 			App.Machine.high_hat_slider.setPosition(data.high_hat_slider);
 		}
 
 		if (App.Machine.high_hat_open_slider.state !== data.high_hat_open_slider){
-			// console.log(data.high_hat_open_slider);
 			App.Machine.high_hat_open_slider.setPosition(data.high_hat_open_slider);
 		}
 
 		if (App.Machine.clap_slider.state !== data.clap_slider){
-			// console.log(data.clap_slider);
 			App.Machine.clap_slider.setPosition(data.clap_slider);
 		}
 
 		if (App.Machine.tom_slider.state !== data.tom_slider){
-			// console.log(data.tom_slider);
 			App.Machine.tom_slider.setPosition(data.tom_slider);
 		}
 
 		if (App.Machine.cowbell_slider.state !== data.cowbell_slider){
-			// console.log(data.cowbell_slider);
 			App.Machine.cowbell_slider.setPosition(data.cowbell_slider);
 		}
 
 		if (App.Machine.shaker_slider.state !== data.shaker_slider){
-			// console.log(data.shaker_slider);
 			App.Machine.shaker_slider.setPosition(data.shaker_slider);
 		}
 
 		if (App.Machine.kick_knob.state !== data.kick_knob){
-			// console.log(data.kick_knob);
 			App.Machine.kick_knob.setPosition(data.kick_knob);
 		}
 
 		if (App.Machine.snare_knob.state !== data.snare_knob){
-			// console.log(data.snare_knob);
 			App.Machine.snare_knob.setPosition(data.snare_knob);
 		}
 
 		if (App.Machine.high_hat_knob.state !== data.high_hat_knob){
-			// console.log(data.high_hat_knob);
 			App.Machine.high_hat_knob.setPosition(data.high_hat_knob);
 		}
 
 		if (App.Machine.high_hat_open_knob.state !== data.high_hat_open_knob){
-			// console.log(data.high_hat_open_knob);
 			App.Machine.high_hat_open_knob.setPosition(data.high_hat_open_knob);
 		}
 
 		if (App.Machine.clap_knob.state !== data.clap_knob){
-			// console.log(data.clap_knob);
 			App.Machine.clap_knob.setPosition(data.clap_knob);
 		}
 
 		if (App.Machine.tom_knob.state !== data.tom_knob){
-			// console.log(data.tom_knob);
 			App.Machine.tom_knob.setPosition(data.tom_knob);
 		}
 
 		if (App.Machine.cowbell_knob.state !== data.cowbell_knob){
-			// console.log(data.cowbell_knob);
 			App.Machine.cowbell_knob.setPosition(data.cowbell_knob);
 		}
 
 		if (App.Machine.shaker_knob.state !== data.shaker_knob){
-			// console.log(data.shaker_knob);
 			App.Machine.shaker_knob.setPosition(data.shaker_knob);
 		}
 
@@ -232,11 +207,35 @@ function drawMachine(){
 
 	// Colors
 
-	var red = 0xe74c3c;
-  var green = 0x2ecc71;
-  var grey = 0x95a5a6;
-  var yellow = 0xf39c12;
-  var yellow_highlight = 0xf1c40f;
+	var red = 0xf15a65;
+  var green = 0x8cc540;
+  var grey = 0xc6b098;
+  var purple = 0x6e2b90;
+  var blue = 0x00baed;
+  var yellow = 0xfbab1e;
+  var yellow_highlight = 0xf3712e;
+
+  // Lighting
+
+	var ambientLight = new THREE.AmbientLight( 0x404040 ); // soft white light
+	scene.add( ambientLight );
+
+	var directionalLight_top = new THREE.DirectionalLight( 0xffffff, 3 );
+	directionalLight_top.position.set( -20, 20, 8 );
+	// directionalLight_top.target.position.set( camera_pointer );
+	directionalLight_top.castShadow = true;
+	directionalLight_top.shadowDarkness = .5;
+
+	var d = 10;
+	directionalLight_top.shadowCameraLeft = -d;
+	directionalLight_top.shadowCameraRight = d;
+	directionalLight_top.shadowCameraTop = d;
+	directionalLight_top.shadowCameraBottom = -d;
+	directionalLight_top.shadowCameraNear	= 5;		
+	directionalLight_top.shadowCameraFar = 500;
+	directionalLight_top.shadowMapWidth = 2048;
+	directionalLight_top.shadowMapHeight = 2048;
+	scene.add( directionalLight_top );
 
 	// Build Drum Machine
 
@@ -346,9 +345,11 @@ function drawMachine(){
 
 	function drawBase(){
 		var geometry = new THREE.BoxGeometry( 19, 9, .75 );
-		var material = new THREE.MeshBasicMaterial( { color: 0x34495e } );
+		var material = new THREE.MeshLambertMaterial( {color: grey, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		base = new THREE.Mesh( geometry, material );
 		// base.translateZ(-1); 
+		base.receiveShadow = true;
+		base.castShadow = true;
 		base.translateX(0);
 		base.translateY(3);
 		scene.add(base);
@@ -359,9 +360,10 @@ function drawMachine(){
 		// Geometry and Material
 
 		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-		var material = new THREE.MeshBasicMaterial( { color: red } );
+		var material = new THREE.MeshLambertMaterial( {color: red, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		App.Machine[name] = new THREE.Mesh( geometry, material );
-
+		App.Machine[name].receiveShadow = true;
+		App.Machine[name].castShadow = true;
 		// Set Location
 
 		App.Machine[name].translateX(x);
@@ -374,8 +376,6 @@ function drawMachine(){
 		App.Machine[name].name = name;
 
 		// Functions & Listeners 
-
-		// var socket = io();
 
 		socket.on("clickPlay", function(data) {
 			console.log("heard click s->c");
@@ -418,8 +418,10 @@ function drawMachine(){
 
 
 		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-		var material = new THREE.MeshBasicMaterial( { color: grey } );
+		var material = new THREE.MeshLambertMaterial( {color: blue, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		App.Machine[name] = new THREE.Mesh( geometry, material );
+		App.Machine[name].receiveShadow = true;
+		App.Machine[name].castShadow = true;
 
 		// Set Location
 
@@ -433,25 +435,7 @@ function drawMachine(){
 		App.Machine[name].state = 0;
 		App.Machine[name].step_position = step_position;
 
-		// App.Machine[name].sound = sound;
-
-		// Functions & Listeners
-
-		// var socket = io();
-
-		// App.Machine[name].socket = io(); 
-
-		// socket.on("Seqclick", function(data) {
-		// 	// console.log("heard click s->c");
-		// 	// console.log(data);
-		// 	console.log("hi");
-		// 	// console.log(data);
-		// 	consolecheck(data);
-		// }); 
-
 		consolecheck = function(data) {
-			// console.log("check");
-			// console.log(data);
 			return;
 		};
 
@@ -490,8 +474,10 @@ function drawMachine(){
 		// Geometry and Material
 
 		var geometry = new THREE.BoxGeometry( 1, .5, 1 );
-		var material = new THREE.MeshBasicMaterial( { color: grey } );
+		var material = new THREE.MeshLambertMaterial( {color: blue, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		App.Machine[name] = new THREE.Mesh( geometry, material );
+		App.Machine[name].receiveShadow = true;
+		App.Machine[name].castShadow = true;
 
 		// Set Location
 
@@ -514,7 +500,7 @@ function drawMachine(){
 					App.Machine[name].material.color.setHex( yellow );
 			} else {
 					App.Machine[name].active = 0;
-					App.Machine[name].material.color.setHex( grey );
+					App.Machine[name].material.color.setHex( blue );
 			}
 		}
 
@@ -550,11 +536,12 @@ function drawMachine(){
 		// Geometry and Material
 
 		var geometry = new THREE.CylinderGeometry( .55, .55, 1, 8 );
-		var material = new THREE.MeshBasicMaterial( { color: grey } );
+		var material = new THREE.MeshLambertMaterial( {color: blue, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		App.Machine[name] = new THREE.Mesh( geometry, material );
+		App.Machine[name].receiveShadow = true;
+		App.Machine[name].castShadow = true;
 
-
-		var pointer_geometry = new THREE.BoxGeometry( .15, 2, 1 );
+		var pointer_geometry = new THREE.BoxGeometry( .15, 1.25, 1 );
 		// pointer_geometry.translateY(y + .25);
 		var material = new THREE.MeshBasicMaterial( { color: green } );
 		pointer = new THREE.Mesh( pointer_geometry, material );
@@ -571,7 +558,7 @@ function drawMachine(){
 					App.Machine[name].material.color.setHex( yellow );
 			} else {
 					App.Machine[name].active = 0;
-					App.Machine[name].material.color.setHex( grey );
+					App.Machine[name].material.color.setHex( blue );
 			}
 		}
 
@@ -631,8 +618,10 @@ function drawMachine(){
 		// Geometry and Material
 
 		var geometry = new THREE.BoxGeometry( 1, .5, 1 );
-		var material = new THREE.MeshBasicMaterial( { color: grey } );
+		var material = new THREE.MeshLambertMaterial( {color: grey, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		App.Machine[name] = new THREE.Mesh( geometry, material );
+		App.Machine[name].receiveShadow = true;
+		App.Machine[name].castShadow = true;
 
 		// Set Location
 
@@ -758,7 +747,7 @@ function drawMachine(){
 		if (button.state === 1 ){
 			button.material.color.setHex( yellow );
 		} else {
-			button.material.color.setHex( grey );
+			button.material.color.setHex( blue );
 		}
 	}
 };
