@@ -38,14 +38,22 @@ var numUsers = 0;
 		tom: [0, 0, 0, 0, 0, 0, 0, 0],
 		cowbell: [0, 0, 0, 0, 0, 0, 0, 0],
 		shaker: [0, 0, 0, 0, 0, 0, 0, 0],
-		kickSlider: 0,
-		snareSlider: 0,
-		hhSlider: 0,
-		hhoSlider: 0,
-		clapSlider: 0,
-		tomSlider: 0,
-		cowbellSlider: 0,
-		shakerSlider: 0
+		kick_slider: 99,
+		snare_slider: 99,
+		high_hat_slider: 99,
+		high_hat_open_slider: 99,
+		clap_slider: 99,
+		tom_slider: 99,
+		cowbell_slider: 99,
+		shaker_slider: 99,
+		kick_knob: 0,
+		snare_knob: 0,
+		high_hat_knob: 0,
+		high_hat_open_knob: 0,
+		clap_knob: 0,
+		tom_knob: 0,
+		cowbell_knob: 0,
+		shaker_knob: 0
 	};
 
 io.on('connection', function(socket) {
@@ -57,7 +65,6 @@ io.on('connection', function(socket) {
 	// socket.broadcast.emit('getCurrentState');
 
 	socket.on('currentState', function(data){
-		console.log(data);
 		socket.broadcast.emit('updateState', data);
 		socket.emit('updateState', data);
 	})
@@ -94,15 +101,33 @@ io.on('connection', function(socket) {
 		// }
 	});
 
+	socket.on('sliderMove', function(data){
+		// console.log(data);
+		var slider = data.name;
+		// console.log(currentState[slider]); 
+		currentState[slider] = data.position;
+		// console.log(currentState[slider]);
+		// socket.emit("updateState", currentState);
+		socket.broadcast.emit("updateState", currentState);
+	})
+
+	socket.on('knobMove', function(data){
+		// console.log(data);
+		var knob = data.name;
+		// console.log(currentState[slider]); 
+		currentState[knob] = data.position;
+		// console.log(currentState[knob]);
+		socket.emit("updateState", currentState);
+		socket.broadcast.emit("updateState", currentState);
+	})
+
 	socket.on('nextStep', function(data) {
 		var current_step = data['passed_step'];
 		var current_visible_length = data[current_visible_length];
 		if (current_step === 7 ){
 			currentState.currentStep = 0;
-			console.log('yes');
 		} else {
 			currentState.currentStep = current_step + 1;
-			console.log(current_step);
 		}
 		socket.emit("updateState", currentState);
 		socket.broadcast.emit("updateState", currentState);

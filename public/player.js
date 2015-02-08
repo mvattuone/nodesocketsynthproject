@@ -84,6 +84,7 @@ if (!active_object) return;
       active_object.__dirtyPosition = true;
       if ((active_object.position.y < active_object.top) && (active_object.position.y > active_object.bottom)){
         active_object.position.y = active_object.position.y - y_diff;
+        active_object.move(); 
       }
       mouse_x = event.clientX;
       mouse_y = event.clientY;
@@ -91,7 +92,9 @@ if (!active_object) return;
   if(active_object.type === "knob"){
       active_object.__dirtyPosition = true;
       if ((active_object.rotation.y > active_object.maximum_rotation_left) && (active_object.rotation.y < active_object.maximum_rotation_right)){
-        active_object.rotation.y = active_object.rotation.y + y_diff;
+        active_object.rotation.y = active_object.rotation.y - y_diff;
+        active_object.move(); 
+        // console.log(active_object.rotation.y);
       }
       mouse_x = event.clientX;
       mouse_y = event.clientY;
@@ -109,7 +112,7 @@ function onDocumentMouseUp( event ) {
       }
     }
     if(active_object.type === "knob"){
-      if(active_object.rotation.y > active_object.maximum_rotation_right){
+      if(active_object.rotation.y >= active_object.maximum_rotation_right){
         active_object.rotation.y = active_object.maximum_rotation_right - .01;
       };
       if(active_object.rotation.y <= active_object.maximum_rotation_left){

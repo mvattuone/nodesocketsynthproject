@@ -15,10 +15,6 @@ function drawMachine(){
 		// consolecheck(data);
 	}); 
 
-	socket.on("currentState", function(data) {
-		// console.log(data);
-	})
-
 	socket.on("getCurrentState", function(){
 		var snare_buttons_state = snare_buttons.map(function(snare_button){
 			return snare_button.state;
@@ -44,7 +40,23 @@ function drawMachine(){
 		var shaker_buttons_state = shaker_buttons.map(function(shaker_button){
 			return shaker_button.state;
 		})					
-		var data = {snare_buttons_state: snare_buttons_state, kick_buttons_state: kick_buttons_state, high_hat_buttons_state: high_hat_buttons_state, high_hat_open_buttons_state: high_hat_open_buttons_state, clap_buttons_state:clap_buttons_state, tom_buttons_state:tom_buttons_state, cowbell_buttons_state:cowbell_buttons_state, shaker_buttons_state:shaker_buttons_state};
+		var data = { snare_buttons_state: snare_buttons_state, 
+								 kick_buttons_state: kick_buttons_state, 
+								 high_hat_buttons_state: high_hat_buttons_state, 
+								 high_hat_open_buttons_state: high_hat_open_buttons_state, 
+								 clap_buttons_state: clap_buttons_state, 
+								 tom_buttons_state: tom_buttons_state, 
+								 cowbell_buttons_state: cowbell_buttons_state, 
+								 shaker_buttons_state: shaker_buttons_state,
+								 kick_slider_state: kick_slider.state,
+							 	 snare_slider_state: snare_slider.state,
+						 		 high_hat_slider_state: high_hat_slider.state,
+					 			 high_hat_open_slider_state: high_hat_open_slider.state,
+								 clap_slider_state: clap_slider.state,
+								 tom_slider_state: tom_slider.state,
+								 cowbell_slider_state: cowbell_slider.state,
+								 shaker_slider_state: shaker_slider.state								 
+							 };
 		socket.emit("currentState", data); 
 	});
 
@@ -55,9 +67,9 @@ function drawMachine(){
 			App.Machine.play.clickSocket();
 		}
 
-		var step_position_temporary = data.currentStep; 
+		// var step_position_temporary = data.currentStep; 
 		// console.log("step position temporary is: "+step_position_temporary);
-		current_step = step_position_temporary; 
+		// current_step = step_position_temporary; 
 
 		var snare = data.snare;
 		snare.forEach(function(state, index){
@@ -115,6 +127,86 @@ function drawMachine(){
 			}
 		})
 
+		if (App.Machine.kick_slider.state !== data.kick_slider){
+			// console.log(data.kick_slider);
+			App.Machine.kick_slider.setPosition(data.kick_slider);
+		}
+
+		if (App.Machine.snare_slider.state !== data.snare_slider){
+			// console.log(data.snare_slider);
+			App.Machine.snare_slider.setPosition(data.snare_slider);
+		}
+
+		if (App.Machine.high_hat_slider.state !== data.high_hat_slider){
+			// console.log(data.high_hat_slider);
+			App.Machine.high_hat_slider.setPosition(data.high_hat_slider);
+		}
+
+		if (App.Machine.high_hat_open_slider.state !== data.high_hat_open_slider){
+			// console.log(data.high_hat_open_slider);
+			App.Machine.high_hat_open_slider.setPosition(data.high_hat_open_slider);
+		}
+
+		if (App.Machine.clap_slider.state !== data.clap_slider){
+			// console.log(data.clap_slider);
+			App.Machine.clap_slider.setPosition(data.clap_slider);
+		}
+
+		if (App.Machine.tom_slider.state !== data.tom_slider){
+			// console.log(data.tom_slider);
+			App.Machine.tom_slider.setPosition(data.tom_slider);
+		}
+
+		if (App.Machine.cowbell_slider.state !== data.cowbell_slider){
+			// console.log(data.cowbell_slider);
+			App.Machine.cowbell_slider.setPosition(data.cowbell_slider);
+		}
+
+		if (App.Machine.shaker_slider.state !== data.shaker_slider){
+			// console.log(data.shaker_slider);
+			App.Machine.shaker_slider.setPosition(data.shaker_slider);
+		}
+
+		if (App.Machine.kick_knob.state !== data.kick_knob){
+			// console.log(data.kick_knob);
+			App.Machine.kick_knob.setPosition(data.kick_knob);
+		}
+
+		if (App.Machine.snare_knob.state !== data.snare_knob){
+			// console.log(data.snare_knob);
+			App.Machine.snare_knob.setPosition(data.snare_knob);
+		}
+
+		if (App.Machine.high_hat_knob.state !== data.high_hat_knob){
+			// console.log(data.high_hat_knob);
+			App.Machine.high_hat_knob.setPosition(data.high_hat_knob);
+		}
+
+		if (App.Machine.high_hat_open_knob.state !== data.high_hat_open_knob){
+			// console.log(data.high_hat_open_knob);
+			App.Machine.high_hat_open_knob.setPosition(data.high_hat_open_knob);
+		}
+
+		if (App.Machine.clap_knob.state !== data.clap_knob){
+			// console.log(data.clap_knob);
+			App.Machine.clap_knob.setPosition(data.clap_knob);
+		}
+
+		if (App.Machine.tom_knob.state !== data.tom_knob){
+			// console.log(data.tom_knob);
+			App.Machine.tom_knob.setPosition(data.tom_knob);
+		}
+
+		if (App.Machine.cowbell_knob.state !== data.cowbell_knob){
+			// console.log(data.cowbell_knob);
+			App.Machine.cowbell_knob.setPosition(data.cowbell_knob);
+		}
+
+		if (App.Machine.shaker_knob.state !== data.shaker_knob){
+			// console.log(data.shaker_knob);
+			App.Machine.shaker_knob.setPosition(data.shaker_knob);
+		}
+
 	});
 
 	var bpm = 128;
@@ -162,7 +254,7 @@ function drawMachine(){
 	kick_button_7 = drawButton(6, 0, 0, "kick_button_7", 6, getKick, 'kick', kick_buttons, "kick");
 	kick_button_8 = drawButton(8, 0, 0, "kick_button_8", 7, getKick, 'kick', kick_buttons, "kick");
 	kick_slider = drawSlider(-6, 1.75,0, "kick_slider", "slider"); 
-	kick_effect_knob = drawKnob(-6, 6.25 ,0, "kick_knob", "knob"); 
+	kick_knob = drawKnob(-6, 6.25 ,0, "kick_knob", "knob"); 
 
 	snare_selector = drawSelector(-4, 1, 0, "snare_selector", snare_buttons);
 	snare_button_1 = drawButton(-6, 0, 0, "snare_button_1", 0,  getSnare, 'snare', snare_buttons, "snare");
@@ -174,7 +266,7 @@ function drawMachine(){
 	snare_button_7 = drawButton(6, 0, 0, "snare_button_7", 6, getSnare, 'snare', snare_buttons, "snare");
 	snare_button_8 = drawButton(8, 0, 0, "snare_button_8", 7, getSnare, 'snare', snare_buttons, "snare");
 	snare_slider = drawSlider(-4, 1.75,0, "snare_slider", "slider"); 
-	snare_effect_knob = drawKnob(-4, 6.25, 0, "snare_knob", "knob"); 
+	snare_knob = drawKnob(-4, 6.25, 0, "snare_knob", "knob"); 
 
 	high_hat_selector = drawSelector(-2, 1, 0, "high_hat_selector", high_hat_buttons);
 	high_hat_button_1 = drawButton(-6, 0, 0, "high_hat_button_1", 0, getHighHat, 'high_hat', high_hat_buttons, "hh");
@@ -186,7 +278,7 @@ function drawMachine(){
 	high_hat_button_7 = drawButton(6, 0, 0, "high_hat_button_7", 6, getHighHat, 'high_hat', high_hat_buttons, "hh");
 	high_hat_button_8 = drawButton(8, 0, 0, "high_hat_button_8", 7, getHighHat, 'high_hat', high_hat_buttons, "hh");
 	high_hat_slider = drawSlider(-2, 1.75,0, "high_hat_slider", "slider"); 
-	high_hat_effect_knob = drawKnob(-2, 6.25, 0, "high_hat_knob", "knob"); 
+	high_hat_knob = drawKnob(-2, 6.25, 0, "high_hat_knob", "knob"); 
 
 	high_hat_open_selector = drawSelector(0, 1, 0, "high_hat_open_selector", high_hat_open_buttons);
 	high_hat_open_button_1 = drawButton(-6, 0, 0, "high_hat_open_button_1", 0, getHighHatOpen, 'high_hat_open', high_hat_open_buttons, "hho");
@@ -198,7 +290,7 @@ function drawMachine(){
 	high_hat_open_button_7 = drawButton(6, 0, 0, "high_hat_open_button_7", 6, getHighHatOpen, 'high_hat_open', high_hat_open_buttons, "hho");
 	high_hat_open_button_8 = drawButton(8, 0, 0, "high_hat_open_button_8", 7, getHighHatOpen, 'high_hat_open', high_hat_open_buttons, "hho");
 	high_hat_open_slider = drawSlider(0, 1.75,0, "high_hat_open_slider", "slider"); 
-	high_hat_open_effect_knob = drawKnob(0, 6.25, 0, "high_hat_open_knob", "knob"); 
+	high_hat_open_knob = drawKnob(0, 6.25, 0, "high_hat_open_knob", "knob"); 
 
 	clap_selector = drawSelector(2, 1, 0, "clap_selector", clap_buttons);
 	clap_button_1 = drawButton(-6, 0, 0, "clap_button_1", 0, getClap, 'clap', clap_buttons, "clap");
@@ -210,7 +302,7 @@ function drawMachine(){
 	clap_button_7 = drawButton(6, 0, 0, "clap_button_7", 6, getClap, 'clap', clap_buttons, "clap");
 	clap_button_8 = drawButton(8, 0, 0, "clap_button_8", 7, getClap, 'clap', clap_buttons, "clap");
 	clap_slider = drawSlider(2, 1.75,0, "clap_slider", "slider"); 
-	clap_effect_knob = drawKnob(2, 6.25, 0, "clap_knob", "knob"); 
+	clap_knob = drawKnob(2, 6.25, 0, "clap_knob", "knob"); 
 
 	tom_selector = drawSelector(4, 1, 0, "tom_selector", tom_buttons);
 	tom_button_1 = drawButton(-6, 0, 0, "tom_button_1", 0, getTom, 'tom', tom_buttons, "tom");
@@ -222,7 +314,7 @@ function drawMachine(){
 	tom_button_7 = drawButton(6, 0, 0, "tom_button_7", 6, getTom, 'tom', tom_buttons, "tom");
 	tom_button_8 = drawButton(8, 0, 0, "tom_button_8", 7, getTom, 'tom', tom_buttons, "tom");
 	tom_slider = drawSlider(4, 1.75,0, "tom_slider", "slider"); 
-	tom_effect_knob = drawKnob(4, 6.25, 0, "tom_knob", "knob"); 
+	tom_knob = drawKnob(4, 6.25, 0, "tom_knob", "knob"); 
 
 	cowbell_selector = drawSelector(6, 1, 0, "cowbell_selector", cowbell_buttons);
 	cowbell_button_1 = drawButton(-6, 0, 0, "cowbell_button_1", 0, getCowbell, 'cowbell', cowbell_buttons, "cowbell");
@@ -234,7 +326,7 @@ function drawMachine(){
 	cowbell_button_7 = drawButton(6, 0, 0, "cowbell_button_7", 6, getCowbell, 'cowbell', cowbell_buttons, "cowbell");
 	cowbell_button_8 = drawButton(8, 0, 0, "cowbell_button_8", 7, getCowbell, 'cowbell', cowbell_buttons, "cowbell");
 	cowbell_slider = drawSlider(6, 1.75,0, "cowbell_slider", "slider"); 
-	cowbell_effect_knob = drawKnob(6, 6.25, 0, "cowbell_knob", "knob"); 
+	cowbell_knob = drawKnob(6, 6.25, 0, "cowbell_knob", "knob"); 
 
 	shaker_selector = drawSelector(8, 1, 0, "shaker_selector", shaker_buttons);
 	shaker_button_1 = drawButton(-6, 0, 0, "shaker_button_1", 0, getShaker, 'maraca', shaker_buttons, "shaker");
@@ -246,7 +338,7 @@ function drawMachine(){
 	shaker_button_7 = drawButton(6, 0, 0, "shaker_button_7", 6, getShaker, 'maraca', shaker_buttons, "shaker");
 	shaker_button_8 = drawButton(8, 0, 0, "shaker_button_8", 7, getShaker, 'maraca', shaker_buttons, "shaker");
 	shaker_slider = drawSlider(8, 1.75,0, "shaker_slider", "slider"); 
-	shaker_effect_knob = drawKnob(8, 6.25, 0, "shaker_knob", "knob"); 
+	shaker_knob = drawKnob(8, 6.25, 0, "shaker_knob", "knob"); 
 
 	// set initial state
 
@@ -410,13 +502,25 @@ function drawMachine(){
 		// Set Parameters 
 
 		App.Machine[name].state = 0;
+		App.Machine[name].active = 0;
 		App.Machine[name].type = type;
 		App.Machine[name].top = 5;
 		App.Machine[name].bottom = 1.75;
+		App.Machine[name].name = name;
 
 		App.Machine[name].click = function(){
-      var state = ( App.Machine.kick_slider.position.y - App.Machine.kick_slider.bottom ) / ( App.Machine[name].top - App.Machine[name].bottom );			
-      socket.emit('sliderMove', {position: state, name: App.Machine[name] });
+			if (App.Machine[name].active === 0){
+					App.Machine[name].active = 1;
+					App.Machine[name].material.color.setHex( yellow );
+			} else {
+					App.Machine[name].active = 0;
+					App.Machine[name].material.color.setHex( grey );
+			}
+		}
+
+		App.Machine[name].move = function(){
+      var state = 100 * ( App.Machine[name].position.y - App.Machine[name].bottom ) / ( App.Machine[name].top - App.Machine[name].bottom );			
+      socket.emit('sliderMove', {position: state, name: App.Machine[name].name });
 			// if (App.Machine[name].state === 0){
 			// 		App.Machine[name].state = 1;
 			// 		setColor(App.Machine[name]);
@@ -424,6 +528,14 @@ function drawMachine(){
 			// 		App.Machine[name].state = 0;
 			// 		setColor(App.Machine[name]);
 			// }
+		}
+
+		App.Machine[name].setPosition = function(state){
+			// console.log(state);
+			App.Machine[name].state = state; 
+			// var position = 100 * ( App.Machine[name].position.y - App.Machine[name].bottom ) / ( App.Machine[name].top - App.Machine[name].bottom );
+			App.Machine[name].position.y = (( App.Machine[name].state / 100 ) * (App.Machine[name].top - App.Machine[name].bottom)) + App.Machine[name].bottom;
+			// console.log(App.Machine[name].position.y);
 		}
 
 		App.Machine[name].clickSocket = function(){
@@ -454,14 +566,43 @@ function drawMachine(){
 		// App.Machine[name].push(pointer);
 
 		App.Machine[name].click = function(){
-			if (App.Machine[name].state === 0){
-					App.Machine[name].state = 1;
-					setColor(App.Machine[name]);
+			if (App.Machine[name].active === 0){
+					App.Machine[name].active = 1;
+					App.Machine[name].material.color.setHex( yellow );
 			} else {
-					App.Machine[name].state = 0;
-					setColor(App.Machine[name]);
+					App.Machine[name].active = 0;
+					App.Machine[name].material.color.setHex( grey );
 			}
 		}
+
+
+		App.Machine[name].move = function(){
+      var state = 100 * ( 1 - (App.Machine[name].rotation.y + App.Machine[name].maximum_rotation_right) / (App.Machine[name].maximum_rotation_right * 2));			
+      if (state > 100){
+      	state = 100; 
+      } else if (state < 0){
+      	state = 0;
+      }
+      // console.log(state);
+      // console.log(state);
+      socket.emit('knobMove', {position: state, name: App.Machine[name].name });
+			// if (App.Machine[name].state === 0){
+			// 		App.Machine[name].state = 1;
+			// 		setColor(App.Machine[name]);
+			// } else {
+			// 		App.Machine[name].state = 0;
+			// 		setColor(App.Machine[name]);
+			// }
+		}
+
+		App.Machine[name].setPosition = function(state){
+			// console.log(state);
+			App.Machine[name].state = state; 
+			// var position = 100 * ( App.Machine[name].position.y - App.Machine[name].bottom ) / ( App.Machine[name].top - App.Machine[name].bottom );
+			App.Machine[name].rotation.y = (( App.Machine[name].state / 100 ) * (App.Machine[name].maximum_rotation_left - App.Machine[name].maximum_rotation_right)) + App.Machine[name].maximum_rotation_right;
+			// console.log(App.Machine[name].position.y);
+		}
+
 		// Set Location
 
 		App.Machine[name].translateX(x);
@@ -470,10 +611,14 @@ function drawMachine(){
 		App.Machine[name].rotateX(1.57079633);
 		App.Machine[name].maximum_rotation_right = 1.8;
 		App.Machine[name].maximum_rotation_left = -1.8; 
+		App.Machine[name].rotation.y = App.Machine[name].maximum_rotation_right;
+		
 		// Set Parameters 
 
 		App.Machine[name].state = 0;
 		App.Machine[name].type = type;
+		App.Machine[name].name = name;
+		App.Machine[name].active = 0;
 
 		scene.add( App.Machine[name] );
 		objects.push( App.Machine[name] );
@@ -558,8 +703,9 @@ function drawMachine(){
 	// Player Functions
 
 	function start_player() {
-		step(); 
+		
 		intervalID = window.setInterval(step, sixteenth_note);
+		step(); 
 	}
 
 	function stop_player() {
@@ -591,12 +737,12 @@ function drawMachine(){
 		}
 		
 		// add one to step or reset to zero if snare_buttons.length is less than current step
-		socket.emit('nextStep', {passed_step: current_step, current_visible_length: current_visible.length});
-		// if (current_step > current_visible.length - 2 ){
-		// 	current_step = 0;
-		// } else {
-		// 	current_step = current_step + 1; 
-		// }
+		// socket.emit('nextStep', {passed_step: current_step, current_visible_length: current_visible.length});
+		if (current_step > current_visible.length - 2 ){
+			current_step = 0;
+		} else {
+			current_step = current_step + 1; 
+		}
 	};
 
 	function playSound(button){
