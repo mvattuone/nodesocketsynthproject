@@ -51,12 +51,31 @@ var numUsers = 0;
 		kick: [0, 0, 0, 0, 0, 0, 0, 0],
 		snare: [0, 0, 0, 0, 0, 0, 0, 0],
 		hh: [0, 0, 0, 0, 0, 0, 0, 0],
-		hho: [0, 0, 0, 0, 0, 0, 0, 0]
+		hho: [0, 0, 0, 0, 0, 0, 0, 0],
+		clap: [0, 0, 0, 0, 0, 0, 0, 0],
+		tom: [0, 0, 0, 0, 0, 0, 0, 0],
+		cowbell: [0, 0, 0, 0, 0, 0, 0, 0],
+		shaker: [0, 0, 0, 0, 0, 0, 0, 0],
+		kick_slider: 99,
+		snare_slider: 99,
+		high_hat_slider: 99,
+		high_hat_open_slider: 99,
+		clap_slider: 99,
+		tom_slider: 99,
+		cowbell_slider: 99,
+		shaker_slider: 99,
+		kick_knob: 0,
+		snare_knob: 0,
+		high_hat_knob: 0,
+		high_hat_open_knob: 0,
+		clap_knob: 0,
+		tom_knob: 0,
+		cowbell_knob: 0,
+		shaker_knob: 0
 	};
 
 io.on('connection', function(socket) {
 	var addedUser = false;
-
 
 	socket.emit("currentState", currentState);
 	socket.emit("updateState", currentState);
@@ -64,7 +83,6 @@ io.on('connection', function(socket) {
 	// socket.broadcast.emit('getCurrentState');
 
 	socket.on('currentState', function(data){
-		console.log(data);
 		socket.broadcast.emit('updateState', data);
 		socket.emit('updateState', data);
 	})
@@ -77,7 +95,7 @@ io.on('connection', function(socket) {
 		} else { currentState.play = 1 }
 		socket.broadcast.emit("updateState", currentState);
 		socket.emit("updateState", currentState);
-		console.log("pushPlay");
+		// console.log("pushPlay");
 	});
 
 	// when the client emits 'pushSeq' this listens and executes
@@ -100,6 +118,38 @@ io.on('connection', function(socket) {
 		// 	currentState.array_name.step_position = 0;
 		// }
 	});
+
+	socket.on('sliderMove', function(data){
+		// console.log(data);
+		var slider = data.name;
+		// console.log(currentState[slider]); 
+		currentState[slider] = data.position;
+		// console.log(currentState[slider]);
+		// socket.emit("updateState", currentState);
+		socket.broadcast.emit("updateState", currentState);
+	})
+
+	socket.on('knobMove', function(data){
+		// console.log(data);
+		var knob = data.name;
+		// console.log(currentState[slider]); 
+		currentState[knob] = data.position;
+		// console.log(currentState[knob]);
+		socket.emit("updateState", currentState);
+		socket.broadcast.emit("updateState", currentState);
+	})
+
+	socket.on('nextStep', function(data) {
+		var current_step = data['passed_step'];
+		var current_visible_length = data[current_visible_length];
+		if (current_step === 7 ){
+			currentState.currentStep = 0;
+		} else {
+			currentState.currentStep = current_step + 1;
+		}
+		socket.emit("updateState", currentState);
+		socket.broadcast.emit("updateState", currentState);
+	})
 
 	// when the client emits 'new message', this listens and executes
 	socket.on('new message', function(data) {
@@ -158,7 +208,7 @@ io.on('connection', function(socket) {
 	});
 
 	socket.on('change color', function(data) {
-		console.log(data);
+		// console.log(data);
 		io.emit("buttonPushed", data);
 		});
 	});
