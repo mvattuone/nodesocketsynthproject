@@ -209,7 +209,7 @@ function drawMachine(){
 
 	var red = 0xf15a65;
   var green = 0x8cc540;
-  var grey = 0xc6b098;
+  var grey = 0x778899;
   var purple = 0x6e2b90;
   var blue = 0x00baed;
   var yellow = 0xfbab1e;
@@ -240,6 +240,7 @@ function drawMachine(){
 	// Build Drum Machine
 
 	drawBase(); 
+	drawBackground();
 
 	play = drawPlay(-8, 0, 0, "play");
 
@@ -343,6 +344,17 @@ function drawMachine(){
 
 	App.Machine.kick_selector.click();
 
+	function drawBackground(){
+		var geometry = new THREE.PlaneGeometry( 30, 30, 16 );
+		var material = new THREE.MeshLambertMaterial( {color: 0xFFE4C4, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		plane = new THREE.Mesh( geometry, material );
+		plane.translateZ(0); 
+		// plane.translateX(0);
+		// plane.translateY(3);
+		plane.receiveShadow = true;
+		scene.add(plane);		
+	}
+
 	function drawBase(){
 		var geometry = new THREE.BoxGeometry( 19, 9, .75 );
 		var material = new THREE.MeshLambertMaterial( {color: grey, side: THREE.DoubleSide, shading: THREE.FlatShading} );
@@ -353,6 +365,18 @@ function drawMachine(){
 		base.translateX(0);
 		base.translateY(3);
 		scene.add(base);
+
+		for(i = 0; i < 8; i++){
+			var geometry = new THREE.BoxGeometry( .1, 3.25, .1 );
+			var material = new THREE.MeshLambertMaterial( {color: blue, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+			bar = new THREE.Mesh( geometry, material );
+			bar.receiveShadow = true;
+			bar.castShadow = true;
+			bar.translateX(-6 + (2 * i));
+			bar.translateZ(.35); 	
+			bar.translateY(3.35);	
+			scene.add(bar);
+		};
 	};
 
 	function drawPlay(x, y, z, name)	{
