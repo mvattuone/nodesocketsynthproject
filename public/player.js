@@ -23,6 +23,8 @@ var windowHeight = 500;
 // Array of Objects That Will Respond To Click / Drag Events
 
 var objects = [];
+var active_object; 
+var mouse_x, mouse_y;
 
 // Set up Three.JS Defaults ( Renderer, Camera, Scene )
 
@@ -31,13 +33,17 @@ var camera = new THREE.PerspectiveCamera( 75, windowWidth/windowHeight, 0.1, 100
 var projector = new THREE.Projector();
 
 var renderer = new THREE.WebGLRenderer({ alpha: true });
-renderer.setClearColor( 0xffffff, 1);
+renderer.setClearColor( 0xecf0f1, 1);
+renderer.shadowMapEnabled = true;
+renderer.shadowMapType = THREE.PCFSoftShadowMap;
 renderer.setSize( windowWidth, windowHeight );
 container.appendChild( renderer.domElement );
 
 // Event Listeners 
 
 renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );        
+renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );        
+renderer.domElement.addEventListener( 'mouseup', onDocumentMouseUp, false );        
 
 // Build Drum Machine
 
@@ -45,7 +51,9 @@ drawMachine();
 
 // Set Camera Position
 
-camera.position.z = 13;
+camera.position.x = -.5;
+camera.position.z = 14;
+camera.position.y = 3;
 
 // Application Functions
 
@@ -53,6 +61,10 @@ function onDocumentMouseDown( event ) {
   var mouse3D = new THREE.Vector3( ( event.clientX / windowWidth ) * 2 - 1,   //x
                                   -( event.clientY / windowHeight ) * 2 + 1,  //y
                                   0.5 );                                            //z
+ 
+  mouse_x = event.clientX;
+  mouse_y = event.clientY;
+
   mouse3D.unproject( camera );   
   mouse3D.sub( camera.position );                
   mouse3D.normalize();
@@ -61,6 +73,55 @@ function onDocumentMouseDown( event ) {
   if ( intersects.length > 0 ) {
     // console.log(mouse3D);
     intersects[0].object.click();
+    if(intersects[0].object.type === "slider" ||  intersects[0].object.type === "knob"){
+      active_object = intersects[0].object; 
+    }
   } 
 };
+
+function onDocumentMouseMove( event ) {
+if (!active_object) return;
+        y_diff = (event.clientY - mouse_y) / 25;
+  if(active_object.type === "slider"){
+      active_object.__dirtyPosition = true;
+      if ((active_object.position.y < active_object.top) && (active_object.position.y > active_object.bottom)){
+        active_object.position.y = active_object.position.y - y_diff;
+        active_object.move(); 
+      }
+      mouse_x = event.clientX;
+      mouse_y = event.clientY;
+  }
+  if(active_object.type === "knob"){
+      active_object.__dirtyPosition = true;
+      if ((active_object.rotation.y > active_object.maximum_rotation_left) && (active_object.rotation.y < active_object.maximum_rotation_right)){
+        active_object.rotation.y = active_object.rotation.y - y_diff;
+        active_object.move(); 
+        // console.log(active_object.rotation.y);
+      }
+      mouse_x = event.clientX;
+      mouse_y = event.clientY;
+  }
+}
+
+function onDocumentMouseUp( event ) {
+  if (!active_object) return;
+    if(active_object.type === "slider"){
+      if(active_object.position.y > active_object.top){
+        active_object.position.y = active_object.top - .01;
+      };
+      if(active_object.position.y <= active_object.bottom){
+        active_object.position.y = active_object.bottom + .01;
+      }
+    }
+    if(active_object.type === "knob"){
+      if(active_object.rotation.y >= active_object.maximum_rotation_right){
+        active_object.rotation.y = active_object.maximum_rotation_right - .01;
+      };
+      if(active_object.rotation.y <= active_object.maximum_rotation_left){
+        active_object.rotation.y = active_object.maximum_rotation_left + .01;
+      }
+    }
+  active_object.click(); 
+  active_object = null;
+}
 
