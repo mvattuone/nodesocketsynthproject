@@ -1,20 +1,20 @@
-// Set up 'App Wide' Variables
+// Set up 'App Wide' Variables 
 
 window.App = {
   Scene: {},
   render: function() {
     requestAnimationFrame( App.render );
     renderer.render(scene, camera);
-  },
+  }, 
   Machine: {},
   Sounds: {}
 };
 
-// Audio Parameters
+// Audio Parameters 
 
 var context = new (window.AudioContext || window.webkitAudioContext)();
 
-// Get DOM Element to Attach Canvas
+// Get DOM Element to Attach Canvas 
 
 var container = document.getElementById('container');
 var windowWidth = 500;
@@ -39,7 +39,7 @@ renderer.shadowMapType = THREE.PCFSoftShadowMap;
 renderer.setSize( windowWidth, windowHeight );
 container.appendChild( renderer.domElement );
 
-// Event Listeners
+// Event Listeners 
 
 renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );        
 renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );        
@@ -57,12 +57,10 @@ camera.position.y = 3;
 
 // Application Functions
 
-function onDocumentMouseDown( event ) {
+function onDocumentMouseDown( event ) { 
   var mouse3D = new THREE.Vector3( ( event.clientX / windowWidth ) * 2 - 1,   //x
                                   -( event.clientY / windowHeight ) * 2 + 1,  //y
                                   0.5 );                                            //z
-  mouse3D.unproject( camera );
-  mouse3D.sub( camera.position );
  
   mouse_x = event.clientX;
   mouse_y = event.clientY;
@@ -72,6 +70,9 @@ function onDocumentMouseDown( event ) {
   mouse3D.normalize();
   var raycaster = new THREE.Raycaster( camera.position, mouse3D );
   var intersects = raycaster.intersectObjects( objects );
+  if ( intersects.length > 0 ) {
+    // console.log(mouse3D);
+    intersects[0].object.click();
     if(intersects[0].object.type === "slider" ||  intersects[0].object.type === "knob"){
       active_object = intersects[0].object; 
     }
@@ -123,4 +124,3 @@ function onDocumentMouseUp( event ) {
   active_object.click(); 
   active_object = null;
 }
-
