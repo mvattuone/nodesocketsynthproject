@@ -56,6 +56,24 @@ var numUsers = 0;
 		tom: [0, 0, 0, 0, 0, 0, 0, 0],
 		cowbell: [0, 0, 0, 0, 0, 0, 0, 0],
 		shaker: [0, 0, 0, 0, 0, 0, 0, 0],
+		bass: { 0: {d: 0, f: 0, a: 0, csharp: 0},
+					  1: {d: 0, f: 0, a: 0, csharp: 0},
+					  2: {d: 0, f: 0, a: 0, csharp: 0},
+					  3: {d: 0, f: 0, a: 0, csharp: 0},
+					  4: {d: 0, f: 0, a: 0, csharp: 0},
+					  5: {d: 0, f: 0, a: 0, csharp: 0},
+					  6: {d: 0, f: 0, a: 0, csharp: 0},				  					  					  					  					 
+					  7: {d: 0, f: 0, a: 0, csharp: 0}
+					},
+		key: { 0: {d: 0, f: 0, a: 0, csharp: 0},
+			  1: {d: 0, f: 0, a: 0, csharp: 0},
+			  2: {d: 0, f: 0, a: 0, csharp: 0},
+			  3: {d: 0, f: 0, a: 0, csharp: 0},
+			  4: {d: 0, f: 0, a: 0, csharp: 0},
+			  5: {d: 0, f: 0, a: 0, csharp: 0},
+			  6: {d: 0, f: 0, a: 0, csharp: 0},				  					  					  					  					 
+			  7: {d: 0, f: 0, a: 0, csharp: 0}
+			},
 		kick_slider: 99,
 		snare_slider: 99,
 		high_hat_slider: 99,
@@ -101,11 +119,38 @@ io.on('connection', function(socket) {
 	// when the client emits 'pushSeq' this listens and executes
 	socket.on('pushSeq', function(data){
 		// if currentState.
+
 		var array = data.array;
 		var step_position = data.name;
 		if (currentState[array][step_position] === 1) {
 			currentState[array][step_position] = 0
 		} else { currentState[array][step_position] = 1}
+		socket.emit("updateState", currentState);
+		socket.broadcast.emit("updateState", currentState);
+
+		// debugger;
+		// var array_name = data.array
+		// var step_position = data.name
+		// if (currentState.array_name.step_position === 0) {
+		// 	currentState.array_name.step_position = 1;
+		// } else if (currentState.array_name.step_position === 1) {
+		// 	currentState.array_name.step_position = 0;
+		// }
+	});
+
+	// socket.emit('pushSynth', {current_synth_hash: synth_hash, note: App.Machine[name].sound, position: App.Machine[name].step_position});
+
+
+	// when the client emits 'pushSeq' this listens and executes
+	socket.on('pushSynth', function(data){
+		// if currentState.
+		console.log(data);
+		var current_hash = data.current_synth_hash;
+		var step_position = data.position;
+		if (currentState[current_hash][step_position][data.note] === 1) {
+			currentState[current_hash][step_position][data.note] = 0
+		} else { currentState[current_hash][step_position][data.note] = 1}
+		console.log(currentState[current_hash]);
 		socket.emit("updateState", currentState);
 		socket.broadcast.emit("updateState", currentState);
 
