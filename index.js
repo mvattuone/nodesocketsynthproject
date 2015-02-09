@@ -6,28 +6,28 @@ var server =  require('http').createServer(app);
 var io = require('socket.io', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling'] })(server);
 var port = process.env.PORT || 8080;
 
-// setup mongoose for mongodb
-var mongoose = require('mongoose');
-mongoose.connect('mongodb://localhost/test');
-var db = mongoose.connection;
-db.on('error', function(callback) {
-	console.log("connection error:", error);
-})
-db.once('open', function(callback) {
-	console.log("connection to db open");
-})
+// // setup mongoose for mongodb
+// var mongoose = require('mongoose');
+// mongoose.connect('mongodb://localhost/test');
+// var db = mongoose.connection;
+// db.on('error', function(callback) {
+// 	console.log("connection error:", error);
+// })
+// db.once('open', function(callback) {
+// 	console.log("connection to db open");
+// })
 
-// define schema for drumMachine a.k.a. currentState a.k.a. syncMachine
-var currentStateSchema = new mongoose.Schema({
-	roomName: String,
-	play: Boolean,
-	currentStep: Number,
-	kick: Array,
-	snare: Array,
-	hh: Array,
-	hho: Array,
-	updated_at: { type: Date, default: Date.now }
-})
+// // define schema for drumMachine a.k.a. currentState a.k.a. syncMachine
+// var currentStateSchema = new mongoose.Schema({
+// 	roomName: String,
+// 	play: Boolean,
+// 	currentStep: Number,
+// 	kick: Array,
+// 	snare: Array,
+// 	hh: Array,
+// 	hho: Array,
+// 	updated_at: { type: Date, default: Date.now }
+// })
 
 // create a model using schema defined above
 // var currentState = mongoose.model('currentState', currentStateSchema);

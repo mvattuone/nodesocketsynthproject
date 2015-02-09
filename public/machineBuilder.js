@@ -220,8 +220,8 @@ function drawMachine(){
 	var ambientLight = new THREE.AmbientLight( 0x404040 ); // soft white light
 	scene.add( ambientLight );
 
-	var directionalLight_top = new THREE.DirectionalLight( 0xffffff, 3 );
-	directionalLight_top.position.set( -20, 20, 8 );
+	var directionalLight_top = new THREE.DirectionalLight( 0xffffff, 1.5 );
+	directionalLight_top.position.set( -20, 20, 20 );
 	// directionalLight_top.target.position.set( camera_pointer );
 	directionalLight_top.castShadow = true;
 	directionalLight_top.shadowDarkness = .5;
@@ -241,6 +241,7 @@ function drawMachine(){
 
 	drawBase(); 
 	drawBackground();
+	drawTableObjects(); 
 
 	play = drawPlay(-8, 0, 0, "play");
 
@@ -344,8 +345,42 @@ function drawMachine(){
 
 	App.Machine.kick_selector.click();
 
+	function drawTableObjects(){
+		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+		var material = new THREE.MeshLambertMaterial( {color: purple, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		table_object = new THREE.Mesh( geometry, material );
+		table_object.receiveShadow = true;
+		table_object.castShadow = true;
+		table_object.translateX(12);
+		table_object.translateY(0.4);  
+		table_object.rotateZ(.3);
+		scene.add(table_object);
+
+		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+		var material = new THREE.MeshLambertMaterial( {color: purple, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		table_object_2 = new THREE.Mesh( geometry, material );
+		table_object_2.receiveShadow = true;
+		table_object_2.castShadow = true;
+		table_object_2.translateX(13.3);
+		table_object_2.translateY(2);  
+		table_object_2.rotateZ(0.6);
+		scene.add(table_object_2);
+
+		var geometry = new THREE.DodecahedronGeometry( 1.5);
+		var material = new THREE.MeshLambertMaterial( {color: purple, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		table_object_3 = new THREE.Mesh( geometry, material );
+		table_object_3.receiveShadow = true;
+		table_object_3.castShadow = true;
+		table_object_3.translateX(-11);
+		table_object_3.translateY(9);
+		table_object_3.translateZ(.5);  
+		table_object_3.rotateZ(0.8);
+		scene.add(table_object_3);
+
+	}
+
 	function drawBackground(){
-		var geometry = new THREE.PlaneGeometry( 30, 30, 16 );
+		var geometry = new THREE.PlaneGeometry( 80, 40, 16 );
 		var material = new THREE.MeshLambertMaterial( {color: 0xFFE4C4, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		plane = new THREE.Mesh( geometry, material );
 		plane.translateZ(0); 

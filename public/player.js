@@ -21,7 +21,7 @@ var context = new (window.AudioContext || window.webkitAudioContext)();
 // Get DOM Element to Attach Canvas 
 
 var container = document.getElementById('container');
-var windowWidth = 600;
+var windowWidth = container.offsetWidth;
 var windowHeight = 500;
 
 // Array of Objects That Will Respond To Click / Drag Events
