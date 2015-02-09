@@ -3,6 +3,10 @@
 window.App = {
   Scene: {},
   render: function() {
+    // SET CAMERA POSITION RELATIVE TO MOUSE POSITION
+    camera.position.x = ( mouseX - camera.position.x ) * 0.001;
+    camera.position.y = (( - mouseY - camera.position.y ) * 0.001) + 3;
+    camera.lookAt( camera_pointer );
     requestAnimationFrame( App.render );
     renderer.render(scene, camera);
   }, 
@@ -17,14 +21,21 @@ var context = new (window.AudioContext || window.webkitAudioContext)();
 // Get DOM Element to Attach Canvas 
 
 var container = document.getElementById('container');
-var windowWidth = 500;
+var windowWidth = 600;
 var windowHeight = 500;
 
 // Array of Objects That Will Respond To Click / Drag Events
 
 var objects = [];
 var active_object; 
-var mouse_x, mouse_y;
+var mouse_x = 0;
+var mouse_y = 0;
+
+// TRACK MOUSE POSITION
+
+var mouseX = 0, mouseY = 0;
+var hoverX = 0, hoverY = 0;
+
 
 // Set up Three.JS Defaults ( Renderer, Camera, Scene )
 
@@ -49,10 +60,14 @@ renderer.domElement.addEventListener( 'mouseup', onDocumentMouseUp, false );
 
 drawMachine();
 
+// CAMERA FOCUS OBJECT
+
+var camera_pointer = new THREE.Vector3( 0, 3, 0 );
+
 // Set Camera Position
 
-camera.position.x = -.5;
-camera.position.z = 14;
+camera.position.x = 0;
+camera.position.z = 12;
 camera.position.y = 3;
 
 // Application Functions
@@ -80,6 +95,8 @@ function onDocumentMouseDown( event ) {
 };
 
 function onDocumentMouseMove( event ) {
+      mouseX = event.clientX;
+      mouseY = event.clientY;
 if (!active_object) return;
         y_diff = (event.clientY - mouse_y) / 25;
   if(active_object.type === "slider"){
