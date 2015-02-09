@@ -6,6 +6,7 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 
 var routes = require('./routes/index');
+var rooms = require('./routes/rooms');
 
 var app = express();
 
@@ -20,10 +21,6 @@ mongoose.connect('mongodb://localhost/sequenSync', function(err) {
   }
 });
 
-// REST API for rooms collection in our MongoDB
-var rooms = require('./routes/rooms');
-app.use('/rooms', rooms);
-var Room = require('../models/Room.js');
 
 // test room
 // var darkroom = new Room({
@@ -52,6 +49,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use('/', routes);
 
+// rooms routes
+app.use('/rooms', rooms);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
