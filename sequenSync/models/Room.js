@@ -1,4 +1,4 @@
-var mongoose = require("mongoose");
+var mongoose = require('mongoose');
 
 var RoomSchema = new mongoose.Schema({
 	name: String,
@@ -11,4 +11,5 @@ var RoomSchema = new mongoose.Schema({
 	updated_at: { type: Date, default: Date.now },
 })
 
-// module.exports = mongoose.model('Room', RoomSchema);
+
+module.exports = mongoose.model('Room', RoomSchema);

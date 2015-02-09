@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
-var mongoose = require("mongoose");
-var Room = require("../models/Room.js");
+var mongoose = require('mongoose');
+var Room = require('../models/Room.js');
 
 /* GET users listing. */
-router.get('/:name', function(req, res, next) {
-  Room.find(function(err, room) {
+router.get('/', function(req, res, next) {
+  Room.find(function (err, rooms) {
   	if (err) return next(err);
-  	res.json(room)
+  	res.json(rooms);
   });
 });
 
