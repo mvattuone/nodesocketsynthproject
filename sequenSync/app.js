@@ -243,7 +243,9 @@ io.on('connection', function(socket) {
     socket.on('join or create room', function(roomname) {
       serverRoomname = roomname;
       console.log(serverRoomname);
-
+      app.get('/rooms/'+roomname, function(req, res) {
+        console.log(res);
+      })
     })
 
     // when the client emits 'typing', we broadcast it to others
