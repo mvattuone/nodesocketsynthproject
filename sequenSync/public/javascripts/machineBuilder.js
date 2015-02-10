@@ -994,7 +994,7 @@ function drawSynthSelector(x, y, z, name, array){
 				setColor(App.Machine[name]);
 				_.each(App.Machine[name].array, function(element){
 					_.each(element, function(element_2){
-						console.log(element_2);
+						// console.log(element_2);
 						element_2.visible = true;
 						element_2.position.z = 0;
 					})
