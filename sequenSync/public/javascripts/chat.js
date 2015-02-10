@@ -264,7 +264,8 @@ $(function() {
   socket.on('login', function (data) {
     connected = true;
     // Display the welcome message
-    var message = "Welcome to sequenSync";
+    var message = "Welcome to sequenSync\n You're in room: "+data.name+"";
+    console.log(data.name);
     log(message, {
       prepend: true
     });

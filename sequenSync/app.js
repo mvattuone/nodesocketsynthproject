@@ -102,11 +102,13 @@ app.use(express.static(__dirname + '/public'));
 // DAW state data living on Server //
 /////////////////////////////////////
 
-var serverRoomname;
+app.roomname;
 var room_id;
 var usernames = {};
 var numUsers = 0;
 var currentState = {
+    name: '',
+    room_id: 0,
     play: 0,
     currentStep: 0,
     kick: [0, 0, 0, 0, 0, 0, 0, 0],
@@ -238,24 +240,24 @@ io.on('connection', function(socket) {
         currentState.tom =  [0, 0, 0, 0, 0, 0, 0, 0];
         currentState.cowbell =  [0, 0, 0, 0, 0, 0, 0, 0];
         currentState.shaker =  [0, 0, 0, 0, 0, 0, 0, 0];
-        currentState.bass =  { 
+        currentState.bass =  {
           0: {d: 0, f: 0, a: 0, csharp: 0},
           1: {d: 0, f: 0, a: 0, csharp: 0},
           2: {d: 0, f: 0, a: 0, csharp: 0},
           3: {d: 0, f: 0, a: 0, csharp: 0},
           4: {d: 0, f: 0, a: 0, csharp: 0},
           5: {d: 0, f: 0, a: 0, csharp: 0},
-          6: {d: 0, f: 0, a: 0, csharp: 0},                                                                                              
+          6: {d: 0, f: 0, a: 0, csharp: 0},
           7: {d: 0, f: 0, a: 0, csharp: 0}
         };
-        currentState.key = { 
+        currentState.key = {
           0: {d: 0, f: 0, a: 0, csharp: 0},
           1: {d: 0, f: 0, a: 0, csharp: 0},
           2: {d: 0, f: 0, a: 0, csharp: 0},
           3: {d: 0, f: 0, a: 0, csharp: 0},
           4: {d: 0, f: 0, a: 0, csharp: 0},
           5: {d: 0, f: 0, a: 0, csharp: 0},
-          6: {d: 0, f: 0, a: 0, csharp: 0},                                                                                              
+          6: {d: 0, f: 0, a: 0, csharp: 0},
           7: {d: 0, f: 0, a: 0, csharp: 0}
         };
         socket.emit("updateState", currentState);
@@ -312,8 +314,10 @@ io.on('connection', function(socket) {
         ++numUsers;
         addedUser = true;
         socket.emit('login', {
-            numUsers: numUsers
+            numUsers: numUsers,
+            name: currentState.name,
         });
+        console.log(currentState.name);
         // echo globally (all clients) that a person has connected
         socket.broadcast.emit('user joined', {
             username: socket.username,
@@ -370,8 +374,8 @@ io.on('connection', function(socket) {
             console.log(room);
             console.log("created room:"+roomname);
             console.log("Current State:"+ currentState.play);
-            serverRoomname = room.name;
-            room_id = room._id;
+            currentState.name = room.name;
+            currentState.room_id = room._id;
             currentState.play = room.play;
             currentState.currentStep = room.currentStep;
             currentState.kick = room.kick;
@@ -402,9 +406,9 @@ io.on('connection', function(socket) {
             currentState.shaker_knob = room.shaker_knob;
           });
         } else {
-          console.log(room);
           console.log("loaded room:"+roomname);
-          console.log("Current State:"+ currentState.play)
+          console.log("ROOM:"+JSON.stringify(room));
+          console.log("STATE:"+JSON.stringify(currentState));
         }
       })
     })
