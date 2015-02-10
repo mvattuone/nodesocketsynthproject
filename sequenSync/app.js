@@ -223,6 +223,42 @@ io.on('connection', function(socket) {
         // }
     });
 
+    socket.on('reset', function(data){
+        console.log("reset");
+        currentState.play = 0;
+        currentState.currentStep =  0;
+        currentState.kick =  [0, 0, 0, 0, 0, 0, 0, 0];
+        currentState.snare =  [0, 0, 0, 0, 0, 0, 0, 0];
+        currentState.hh =  [0, 0, 0, 0, 0, 0, 0, 0];
+        currentState.hho =  [0, 0, 0, 0, 0, 0, 0, 0];
+        currentState.clap =  [0, 0, 0, 0, 0, 0, 0, 0];
+        currentState.tom =  [0, 0, 0, 0, 0, 0, 0, 0];
+        currentState.cowbell =  [0, 0, 0, 0, 0, 0, 0, 0];
+        currentState.shaker =  [0, 0, 0, 0, 0, 0, 0, 0];
+        currentState.bass =  { 
+          0: {d: 0, f: 0, a: 0, csharp: 0},
+          1: {d: 0, f: 0, a: 0, csharp: 0},
+          2: {d: 0, f: 0, a: 0, csharp: 0},
+          3: {d: 0, f: 0, a: 0, csharp: 0},
+          4: {d: 0, f: 0, a: 0, csharp: 0},
+          5: {d: 0, f: 0, a: 0, csharp: 0},
+          6: {d: 0, f: 0, a: 0, csharp: 0},                                                                                              
+          7: {d: 0, f: 0, a: 0, csharp: 0}
+        };
+        currentState.key = { 
+          0: {d: 0, f: 0, a: 0, csharp: 0},
+          1: {d: 0, f: 0, a: 0, csharp: 0},
+          2: {d: 0, f: 0, a: 0, csharp: 0},
+          3: {d: 0, f: 0, a: 0, csharp: 0},
+          4: {d: 0, f: 0, a: 0, csharp: 0},
+          5: {d: 0, f: 0, a: 0, csharp: 0},
+          6: {d: 0, f: 0, a: 0, csharp: 0},                                                                                              
+          7: {d: 0, f: 0, a: 0, csharp: 0}
+        };
+        socket.emit("updateState", currentState);
+        socket.broadcast.emit("updateState", currentState);
+    })
+
     socket.on('sliderMove', function(data){
         // console.log(data);
         var slider = data.name;
