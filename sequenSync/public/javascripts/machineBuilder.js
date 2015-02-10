@@ -256,6 +256,7 @@ function drawMachine(){
 	var grey = 0x778899;
 	var purple = 0x6e2b90;
 	var blue = 0x00baed;
+	var black = 0xa263b;
 	var yellow = 0xfbab1e;
 	var yellow_highlight = 0xf3712e;
 
@@ -293,6 +294,7 @@ function drawMachine(){
 	function drawDrumMachine(position){
 
 		drawDrumMachineBase();
+		reset_button = drawReset(-22, 6.25, 0, "reset_button");
 
 		kick_selector = drawSelector(-20, 1, 0, "kick_selector", kick_buttons);
 		kick_button_1 = drawButton(-20, 0, 0, "kick_button_1", 0, getKick, 'kick', kick_buttons, "kick");
@@ -566,6 +568,58 @@ function drawMachine(){
 		base.translateY(3);
 		scene.add(base);
 	}
+
+function drawReset(x, y, z, name)	{
+
+		// Geometry and Material
+
+		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+		var material = new THREE.MeshLambertMaterial( {color: black, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		App.Machine[name] = new THREE.Mesh( geometry, material );
+		App.Machine[name].receiveShadow = true;
+		App.Machine[name].castShadow = true;
+
+		// Set Location
+
+		App.Machine[name].translateX(x);
+		App.Machine[name].translateY(y);
+		App.Machine[name].translateZ(z);
+
+		// Set Parameters
+
+		App.Machine[name].state = 0;
+		App.Machine[name].name = name;
+
+		// Functions & Listeners
+
+
+		App.Machine[name].click = function(){
+			socket.emit('reset', name);
+		};
+
+		App.Machine[name].clickSocket = function(){
+			// if state is 0 (off), begin 'playing' the step sequencer and set to green, state state to on
+			// if state is 1 (on), stop sequencer and set state to off, color to red
+			// if (App.Machine[name].state === 0){
+			// 	start_player();
+			// 	this.material.color.setHex( green );
+			// 	App.Machine[name].state = 1;
+			// } else {
+			// 	stop_player();
+			// 	this.material.color.setHex( red );
+			// 	App.Machine[name].state = 0;
+			// }
+			// socket emitter
+			// socket.emit('push', name);
+		};
+
+		// Add to Scene
+
+		scene.add( App.Machine[name] );
+		objects.push( App.Machine[name] );
+		// play_button.push( App.Machine[name] );
+
+	};
 
 	function drawPlay(x, y, z, name)	{
 
