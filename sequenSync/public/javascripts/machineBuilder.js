@@ -295,6 +295,7 @@ function drawMachine(){
 
 		drawDrumMachineBase();
 		reset_button = drawReset(-22, 6.25, 0, "reset_button");
+		save_button = drawSave(-22, 5, 0, "save_button");
 
 		kick_selector = drawSelector(-20, 1, 0, "kick_selector", kick_buttons);
 		kick_button_1 = drawButton(-20, 0, 0, "kick_button_1", 0, getKick, 'kick', kick_buttons, "kick");
@@ -391,6 +392,7 @@ function drawMachine(){
 		shaker_button_8 = drawButton(-6, 0, 0, "shaker_button_8", 7, getShaker, 'maraca', shaker_buttons, "shaker");
 		shaker_slider = drawSlider(-6, 1.75,0, "shaker_slider", "slider");
 		shaker_knob = drawKnob(-6, 6.25, 0, "shaker_knob", "knob");
+
 	}
 
 	function drawSynth(position){
@@ -543,6 +545,7 @@ function drawMachine(){
 		base.translateX(-14);
 		base.translateY(3);
 		scene.add(base);
+		objects.push( base );
 
 		for(i = 0; i < 8; i++){
 			var geometry = new THREE.BoxGeometry( .1, 3.25, .1 );
@@ -555,6 +558,7 @@ function drawMachine(){
 			bar.translateY(3.35);
 			scene.add(bar);
 		};
+
 	};
 
 	function drawSynthBase(position){
@@ -567,6 +571,7 @@ function drawMachine(){
 		base.translateX(position + 9);
 		base.translateY(3);
 		scene.add(base);
+		objects.push( base );
 	}
 
 function drawReset(x, y, z, name)	{
@@ -621,6 +626,110 @@ function drawReset(x, y, z, name)	{
 
 	};
 
+function drawReset(x, y, z, name)	{
+
+		// Geometry and Material
+
+		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+		var material = new THREE.MeshLambertMaterial( {color: black, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		App.Machine[name] = new THREE.Mesh( geometry, material );
+		App.Machine[name].receiveShadow = true;
+		App.Machine[name].castShadow = true;
+
+		// Set Location
+
+		App.Machine[name].translateX(x);
+		App.Machine[name].translateY(y);
+		App.Machine[name].translateZ(z);
+
+		// Set Parameters
+
+		App.Machine[name].state = 0;
+		App.Machine[name].name = name;
+
+		// Functions & Listeners
+
+
+		App.Machine[name].click = function(){
+			socket.emit('reset', name);
+		};
+
+		App.Machine[name].clickSocket = function(){
+			// if state is 0 (off), begin 'playing' the step sequencer and set to green, state state to on
+			// if state is 1 (on), stop sequencer and set state to off, color to red
+			// if (App.Machine[name].state === 0){
+			// 	start_player();
+			// 	this.material.color.setHex( green );
+			// 	App.Machine[name].state = 1;
+			// } else {
+			// 	stop_player();
+			// 	this.material.color.setHex( red );
+			// 	App.Machine[name].state = 0;
+			// }
+			// socket emitter
+			// socket.emit('push', name);
+		};
+
+		// Add to Scene
+
+		scene.add( App.Machine[name] );
+		objects.push( App.Machine[name] );
+		// play_button.push( App.Machine[name] );
+
+	};
+function drawSave(x, y, z, name)	{
+
+		// Geometry and Material
+
+		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
+		var material = new THREE.MeshLambertMaterial( {color: green, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		App.Machine[name] = new THREE.Mesh( geometry, material );
+		App.Machine[name].receiveShadow = true;
+		App.Machine[name].castShadow = true;
+
+		// Set Location
+
+		App.Machine[name].translateX(x);
+		App.Machine[name].translateY(y);
+		App.Machine[name].translateZ(z);
+
+		// Set Parameters
+
+		App.Machine[name].state = 0;
+		App.Machine[name].name = name;
+
+		// Functions & Listeners
+
+
+		App.Machine[name].click = function(){
+			socket.emit('save', name);
+		};
+
+		App.Machine[name].clickSocket = function(){
+			// if state is 0 (off), begin 'playing' the step sequencer and set to green, state state to on
+			// if state is 1 (on), stop sequencer and set state to off, color to red
+			// if (App.Machine[name].state === 0){
+			// 	start_player();
+			// 	this.material.color.setHex( green );
+			// 	App.Machine[name].state = 1;
+			// } else {
+			// 	stop_player();
+			// 	this.material.color.setHex( red );
+			// 	App.Machine[name].state = 0;
+			// }
+			// socket emitter
+			// socket.emit('push', name);
+		};
+
+		// Add to Scene
+
+		scene.add( App.Machine[name] );
+		objects.push( App.Machine[name] );
+		// play_button.push( App.Machine[name] );
+
+	};
+
+
 	function drawPlay(x, y, z, name)	{
 
 		// Geometry and Material
@@ -659,10 +768,12 @@ function drawReset(x, y, z, name)	{
 			// if state is 1 (on), stop sequencer and set state to off, color to red
 			if (App.Machine[name].state === 0){
 				start_player();
+				App.Machine[name].position.z = -0.05; 
 				this.material.color.setHex( green );
 				App.Machine[name].state = 1;
 			} else {
 				stop_player();
+				App.Machine[name].position.z = 0; 
 				this.material.color.setHex( red );
 				App.Machine[name].state = 0;
 			}
@@ -714,9 +825,11 @@ function drawReset(x, y, z, name)	{
 			// if off, set state to 0 (off) and change color back to grey
 			if (App.Machine[name].state === 0){
 				App.Machine[name].state = 1;
+				App.Machine[name].position.z = -0.05; 
 				setColor(App.Machine[name]);
 			} else {
 				App.Machine[name].state = 0;
+				App.Machine[name].position.z = 0; 
 				setColor(App.Machine[name]);
 			}
 		};
@@ -777,9 +890,11 @@ function drawReset(x, y, z, name)	{
 				// if off, set state to 0 (off) and change color back to grey
 				if (App.Machine[name].state === 0){
 					App.Machine[name].state = 1;
+					App.Machine[name].position.z = -0.05; 
 					setColor(App.Machine[name]);
 				} else {
 					App.Machine[name].state = 0;
+					App.Machine[name].position.z = 0; 
 					setColor(App.Machine[name]);
 				}
 			};
@@ -803,7 +918,7 @@ function drawReset(x, y, z, name)	{
 	function drawSlider(x, y, z, name, type){
 		// Geometry and Material
 
-		var geometry = new THREE.BoxGeometry( 1, .5, 1 );
+		var geometry = new THREE.BoxGeometry( .4, .8, 1 );
 		var material = new THREE.MeshLambertMaterial( {color: blue, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		App.Machine[name] = new THREE.Mesh( geometry, material );
 		App.Machine[name].receiveShadow = true;
@@ -865,11 +980,19 @@ function drawReset(x, y, z, name)	{
 	function drawKnob(x, y, z, name, type){
 		// Geometry and Material
 
-		var geometry = new THREE.CylinderGeometry( .55, .55, 1, 8 );
+		var geometry = new THREE.CylinderGeometry( .45, 1, 1, 12 );
 		var material = new THREE.MeshLambertMaterial( {color: blue, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		App.Machine[name] = new THREE.Mesh( geometry, material );
 		App.Machine[name].receiveShadow = true;
 		App.Machine[name].castShadow = true;
+
+
+		var geometry = new THREE.CylinderGeometry( .25, .8, 1, 12 );
+		var material = new THREE.MeshLambertMaterial( {color: blue, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		top_knob = new THREE.Mesh( geometry, material );
+		top_knob.translateZ(3);
+		top_knob.receiveShadow = true;
+		top_knob.castShadow = true;
 
 		var pointer_geometry = new THREE.BoxGeometry( .15, 1.25, 1 );
 		// pointer_geometry.translateY(y + .25);
@@ -877,6 +1000,8 @@ function drawReset(x, y, z, name)	{
 		pointer = new THREE.Mesh( pointer_geometry, material );
 
 		// pointer.geometry.updateMatrix();
+				App.Machine[name].geometry.merge( pointer.geometry, pointer.geometry.matrix );
+
 		App.Machine[name].geometry.merge( pointer.geometry, pointer.geometry.matrix );
 
 		pointer.translateY(5);
@@ -973,6 +1098,7 @@ function drawReset(x, y, z, name)	{
 			if (App.Machine[name].state === 0){
 				// set all selectors to off
 				selectors.forEach( function(selector){
+					selector.position.z = 0;
 					selector.state = 0;
 					setColor(selector);
 					selector.buttons.forEach(function(button){
@@ -985,10 +1111,15 @@ function drawReset(x, y, z, name)	{
 				current_visible = App.Machine[name].array;
 				App.Machine[name].state = 1;
 				setColor(App.Machine[name]);
+				App.Machine[name].position.z = -0.05; 
 				//// set its array to visible
 				App.Machine[name].buttons.forEach(function(button){
 					button.visible = true;
-					button.position.z = 0;
+					if (button.state === 1){
+						button.position.z = -0.05;
+					} else {
+						button.position.z = 0;
+					}
 				});
 			};
 		};
@@ -1032,6 +1163,7 @@ function drawSynthSelector(x, y, z, name, array){
 				// set all synth selectors to off
 				synth_selectors.forEach( function(selector){
 					selector.state = 0;
+					selector.position.z = -0; 
 					setColor(selector);
 					_.each(selector.array, function(element){
 						_.each(element, function(element_2){
@@ -1045,12 +1177,17 @@ function drawSynthSelector(x, y, z, name, array){
 				// console.log(App.Machine[name].array);
 				// current_visible = App.Machine[name].array;
 				App.Machine[name].state = 1;
+				App.Machine[name].position.z = -0.05; 
 				setColor(App.Machine[name]);
 				_.each(App.Machine[name].array, function(element){
 					_.each(element, function(element_2){
 						// console.log(element_2);
 						element_2.visible = true;
+					if (element_2.state === 1){
+						element_2.position.z = -0.05;
+					} else {
 						element_2.position.z = 0;
+					}
 					})
 				})
 				//// set its array to visible
