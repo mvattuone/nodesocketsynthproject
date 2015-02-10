@@ -17,7 +17,7 @@ function getKick() {
         biquadFilter.frequency.value = filter_frequency;
         var gainNode = context.createGain();
         var top_value = App.Machine.kick_slider.top - App.Machine.kick_slider.bottom;
-        gainNode.gain.value = ( App.Machine.kick_slider.position.y - App.Machine.kick_slider.bottom ) / top_value;
+        gainNode.gain.value = (( App.Machine.kick_slider.position.y - App.Machine.kick_slider.bottom ) / top_value) - .1;
         App.Sounds['kick'].loop = false;
         App.Sounds['kick'].connect(biquadFilter);
         biquadFilter.connect(gainNode);
@@ -48,7 +48,7 @@ function getSnare() {
         biquadFilter.frequency.value = filter_frequency;
         var gainNode = context.createGain();
         var top_value = App.Machine.snare_slider.top - App.Machine.snare_slider.bottom;
-        gainNode.gain.value = ( App.Machine.snare_slider.position.y - App.Machine.snare_slider.bottom ) / top_value;
+        gainNode.gain.value = (( App.Machine.snare_slider.position.y - App.Machine.snare_slider.bottom ) / top_value) - .1;
         App.Sounds['snare'].connect(biquadFilter);
         biquadFilter.connect(gainNode);
         gainNode.connect(context.destination);
@@ -260,7 +260,10 @@ function getBass(note) {
 
     context.decodeAudioData(audioData, function(buffer) {
         App.Sounds["bass_"+note].buffer = buffer;
-        App.Sounds["bass_"+note].connect(context.destination);
+        var gainNode = context.createGain();
+        gainNode.gain.value = 1.3;
+        App.Sounds["bass_"+note].connect(gainNode);
+        gainNode.connect(context.destination);
         App.Sounds["bass_"+note].loop = false;
       },
 
@@ -283,7 +286,10 @@ function getKey(note) {
 
     context.decodeAudioData(audioData, function(buffer) {
         App.Sounds["key_"+note].buffer = buffer;
-        App.Sounds["key_"+note].connect(context.destination);
+        var gainNode = context.createGain();
+        gainNode.gain.value = .6;
+        App.Sounds["key_"+note].connect(gainNode);
+        gainNode.connect(context.destination);
         App.Sounds["key_"+note].loop = false;
       },
 
