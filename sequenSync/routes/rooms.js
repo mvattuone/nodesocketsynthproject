@@ -36,4 +36,12 @@ router.put('/:id', function(req, res, next) {
 	});
 });
 
+// DELETE /rooms/:id
+router.delete('/:id', function(req, res, next) {
+	Room.findByIdAndRemove(req.params.id, req.body, function(err, room) {
+		if (err) return next(err);
+		res.json(room);
+	});
+});
+
 module.exports = router;
