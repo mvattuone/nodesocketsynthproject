@@ -2,7 +2,7 @@ function getKick() {
   App.Sounds['kick'] = context.createBufferSource();
   var request = new XMLHttpRequest();
 
-  request.open('GET', '/samples/kick.wav', true);
+  request.open('GET', '../samples/kick.wav', true);
 
   request.responseType = 'arraybuffer';
 
@@ -239,6 +239,52 @@ function getShaker() {
         biquadFilter.connect(gainNode);
         gainNode.connect(context.destination);
         App.Sounds['maraca'].loop = false;
+      },
+
+      function(e){"Error with decoding audio data" + e.err});
+  }
+  request.send();
+};
+
+function getBass(note) {
+  App.Sounds["bass_"+note] = context.createBufferSource();
+  var request = new XMLHttpRequest();
+  var address = "/samples/bass_"+note+".wav"
+  console.log(address);
+  request.open('GET', address, true);
+
+  request.responseType = 'arraybuffer';
+
+  request.onload = function() {
+    var audioData = request.response;
+
+    context.decodeAudioData(audioData, function(buffer) {
+        App.Sounds["bass_"+note].buffer = buffer;
+        App.Sounds["bass_"+note].connect(context.destination);
+        App.Sounds["bass_"+note].loop = false;
+      },
+
+      function(e){"Error with decoding audio data" + e.err});
+  }
+  request.send();
+};
+
+function getKey(note) {
+  App.Sounds["key_"+note] = context.createBufferSource();
+  var request = new XMLHttpRequest();
+  var address = "/samples/key_"+note+".wav"
+  console.log(address);
+  request.open('GET', address, true);
+
+  request.responseType = 'arraybuffer';
+
+  request.onload = function() {
+    var audioData = request.response;
+
+    context.decodeAudioData(audioData, function(buffer) {
+        App.Sounds["key_"+note].buffer = buffer;
+        App.Sounds["key_"+note].connect(context.destination);
+        App.Sounds["key_"+note].loop = false;
       },
 
       function(e){"Error with decoding audio data" + e.err});

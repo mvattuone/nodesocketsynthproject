@@ -15,9 +15,13 @@ $(function() {
 
   var $loginPage = $('.login.page'); // The login page
   var $chatPage = $('.chat.page'); // The chatroom page
+  var $roomnameInput = $('.roomnameInput'); // The roomname input
+  var $nameTitle = $('.nametitle');
+  var $roomTitle = $('.roomtitle');
 
   // Prompt for setting a username
   var username;
+  var roomname;
   var connected = false;
   var typing = false;
   var lastTypingTime;
@@ -41,14 +45,45 @@ $(function() {
 
     // If the username is valid
     if (username) {
-      $loginPage.fadeOut();
-      $chatPage.show();
-      $loginPage.off('click');
-      $currentInput = $inputMessage.focus();
-
+      $usernameInput.fadeOut(function() {
+        success: $roomnameInput.fadeIn();
+      });
+      $nameTitle.fadeOut(function() {
+        success: $roomTitle.fadeIn();
+      });
+      // $loginPage.fadeOut();
+      // $chatPage.show();
+      // $loginPage.off('click');
+      // $currentInput = $inputMessage.focus();
+      // setRoomname();
       // Tell the server your username
       socket.emit('add user', username);
+      setRoomname();
+      $currentInput = $roomnameInput.focus();
     }
+  }
+
+  function setRoomname() {
+    $window.keydown(function (event) {
+    // When the client hits ENTER on their keyboard
+      if (event.which === 13) {
+        var roomname = cleanInput($roomnameInput.val().trim());
+        if (roomname) {
+          socket.emit('join or create room', roomname);
+          $loginPage.fadeOut();
+          $chatPage.show();
+          $loginPage.off('click');
+          $currentInput = $inputMessage.focus();
+          $window.keydown(function (event) {
+            if (event.which === 13) {
+              sendMessage();
+              socket.emit('stop typing');
+              typing = false;
+            }
+          });
+        }
+      }
+    });
   }
 
   // Sends a chat message
@@ -197,11 +232,11 @@ $(function() {
     }
     // When the client hits ENTER on their keyboard
     if (event.which === 13) {
-      if (username) {
+      if (username && roomname) {
         sendMessage();
         socket.emit('stop typing');
         typing = false;
-      } else {
+      } else if (!username){
         setUsername();
       }
     }
@@ -229,7 +264,7 @@ $(function() {
   socket.on('login', function (data) {
     connected = true;
     // Display the welcome message
-    var message = "Yo welcome to IanOdron";
+    var message = "Welcome to sequenSync";
     log(message, {
       prepend: true
     });

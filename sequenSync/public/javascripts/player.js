@@ -1,24 +1,24 @@
-// Set up 'App Wide' Variables 
+// Set up 'App Wide' Variables
 
 window.App = {
   Scene: {},
   render: function() {
     // SET CAMERA POSITION RELATIVE TO MOUSE POSITION
-    camera.position.x = ( mouseX - camera.position.x ) * 0.001;
+    // camera.position.x = ( mouseX - camera.position.x ) * 0.001;
     camera.position.y = (( - mouseY - camera.position.y ) * 0.001) + 3;
     camera.lookAt( camera_pointer );
     requestAnimationFrame( App.render );
     renderer.render(scene, camera);
-  }, 
+  },
   Machine: {},
   Sounds: {}
 };
 
-// Audio Parameters 
+// Audio Parameters
 
 var context = new (window.AudioContext || window.webkitAudioContext)();
 
-// Get DOM Element to Attach Canvas 
+// Get DOM Element to Attach Canvas
 
 var container = document.getElementById('container');
 var windowWidth = container.offsetWidth;
@@ -27,7 +27,7 @@ var windowHeight = 500;
 // Array of Objects That Will Respond To Click / Drag Events
 
 var objects = [];
-var active_object; 
+var active_object;
 var mouse_x = 0;
 var mouse_y = 0;
 
@@ -50,11 +50,11 @@ renderer.shadowMapType = THREE.PCFSoftShadowMap;
 renderer.setSize( windowWidth, windowHeight );
 container.appendChild( renderer.domElement );
 
-// Event Listeners 
+// Event Listeners
 
-renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );        
-renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );        
-renderer.domElement.addEventListener( 'mouseup', onDocumentMouseUp, false );        
+renderer.domElement.addEventListener( 'mousedown', onDocumentMouseDown, false );
+renderer.domElement.addEventListener( 'mousemove', onDocumentMouseMove, false );
+renderer.domElement.addEventListener( 'mouseup', onDocumentMouseUp, false );
 
 // Build Drum Machine
 
@@ -72,16 +72,16 @@ camera.position.y = 3;
 
 // Application Functions
 
-function onDocumentMouseDown( event ) { 
+function onDocumentMouseDown( event ) {
   var mouse3D = new THREE.Vector3( ( event.clientX / windowWidth ) * 2 - 1,   //x
                                   -( event.clientY / windowHeight ) * 2 + 1,  //y
                                   0.5 );                                            //z
- 
+
   mouse_x = event.clientX;
   mouse_y = event.clientY;
 
-  mouse3D.unproject( camera );   
-  mouse3D.sub( camera.position );                
+  mouse3D.unproject( camera );
+  mouse3D.sub( camera.position );
   mouse3D.normalize();
   var raycaster = new THREE.Raycaster( camera.position, mouse3D );
   var intersects = raycaster.intersectObjects( objects );
@@ -89,9 +89,9 @@ function onDocumentMouseDown( event ) {
     // console.log(mouse3D);
     intersects[0].object.click();
     if(intersects[0].object.type === "slider" ||  intersects[0].object.type === "knob"){
-      active_object = intersects[0].object; 
+      active_object = intersects[0].object;
     }
-  } 
+  }
 };
 
 function onDocumentMouseMove( event ) {
@@ -103,7 +103,7 @@ if (!active_object) return;
       active_object.__dirtyPosition = true;
       if ((active_object.position.y < active_object.top) && (active_object.position.y > active_object.bottom)){
         active_object.position.y = active_object.position.y - y_diff;
-        active_object.move(); 
+        active_object.move();
       }
       mouse_x = event.clientX;
       mouse_y = event.clientY;
@@ -112,7 +112,7 @@ if (!active_object) return;
       active_object.__dirtyPosition = true;
       if ((active_object.rotation.y > active_object.maximum_rotation_left) && (active_object.rotation.y < active_object.maximum_rotation_right)){
         active_object.rotation.y = active_object.rotation.y - y_diff;
-        active_object.move(); 
+        active_object.move();
         // console.log(active_object.rotation.y);
       }
       mouse_x = event.clientX;
@@ -138,6 +138,6 @@ function onDocumentMouseUp( event ) {
         active_object.rotation.y = active_object.maximum_rotation_left + .01;
       }
     }
-  active_object.click(); 
+  active_object.click();
   active_object = null;
 }

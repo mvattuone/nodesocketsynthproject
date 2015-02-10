@@ -70,6 +70,10 @@ ul {
   width: 100%;
 }
 
+.roomnameInput {
+  display: none;
+}
+
 .login.page .form .usernameInput {
   background-color: transparent;
   border: none;
@@ -80,7 +84,24 @@ ul {
   width: 400px;
 }
 
-.login.page .title {
+.login.page .form .roomnameInput {
+  background-color: transparent;
+  border: none;
+  border-bottom: 2px solid #fff;
+  outline: none;
+  padding-bottom: 15px;
+  text-align: center;
+  width: 400px;
+}
+
+.roomTitle {
+  display: none;
+}
+
+.login.page .nameTitle {
+  font-size: 200%;
+}
+.login.page .roomTitle {
   font-size: 200%;
 }
 
@@ -89,7 +110,25 @@ ul {
   letter-spacing: 3px;
 }
 
-.login.page .title, .login.page .usernameInput {
+.login.page .roomnameInput {
+  font-size: 200%;
+  letter-spacing: 3px;
+}
+
+.login.page .nameTitle, .login.page .usernameInput {
+  color: #fff;
+  font-weight: 100;
+}
+.login.page .roomTitle, .login.page .usernameInput {
+  color: #fff;
+  font-weight: 100;
+}
+
+.login.page .nameTitle, .login.page .roomnameInput {
+  color: #fff;
+  font-weight: 100;
+}
+.login.page .roomTitle, .login.page .roomnameInput {
   color: #fff;
   font-weight: 100;
 }

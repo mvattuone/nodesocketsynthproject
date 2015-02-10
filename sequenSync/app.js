@@ -1,3 +1,7 @@
+/////////////////////////
+// Module dependencies //
+/////////////////////////
+
 var express = require('express');
 var path = require('path');
 var favicon = require('serve-favicon');
@@ -9,13 +13,16 @@ var routes = require('./routes/index');
 var rooms = require('./routes/rooms');
 
 var app = express();
+app.engine('html', require('ejs').renderFile);
 var server =  require('http').createServer(app);
 var io = require('socket.io', { rememberTransport: false, transports: ['WebSocket', 'Flash Socket', 'AJAX long-polling'] })(server);
 var port = process.env.PORT || 8080;
-
-
-// mongoose 
 var mongoose = require('mongoose');
+
+////////////////////////////////
+// Mongoose (MongoDB) Connect //
+////////////////////////////////
+
 mongoose.connect('mongodb://localhost/sequenSync', function(err) {
   if(err) {
     console.log('connection error', err);
@@ -24,7 +31,10 @@ mongoose.connect('mongodb://localhost/sequenSync', function(err) {
   }
 });
 
-// view engine setup
+///////////////////////
+// view engine setup //
+///////////////////////
+
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
 
@@ -40,6 +50,7 @@ app.use('/', routes);
 
 // rooms routes
 app.use('/rooms', rooms);
+// redirect all random paths to index
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -48,7 +59,9 @@ app.use(function(req, res, next) {
     next(err);
 });
 
-// error handlers
+////////////////////
+// Error handlers //
+////////////////////
 
 // development error handler
 // will print stacktrace
@@ -72,7 +85,10 @@ app.use(function(err, req, res, next) {
     });
 });
 
-// log server listen port
+////////////////////////////
+// log server listen port //
+////////////////////////////
+
 server.listen(port, function() {
     console.log('Server listening at port %d', port);
 });
@@ -80,39 +96,45 @@ server.listen(port, function() {
 // Routing
 app.use(express.static(__dirname + '/public'));
 
-// Chatroom
+/////////////////////////////////////
+// DAW state data living on Server //
+/////////////////////////////////////
 
-// username which are currently connected to the chat
+var serverRoomname;
 var usernames = {};
 var numUsers = 0;
-    var currentState = {
-        play: 0,
-        currentStep: 0,
-        kick: [0, 0, 0, 0, 0, 0, 0, 0],
-        snare: [0, 0, 0, 0, 0, 0, 0, 0],
-        hh: [0, 0, 0, 0, 0, 0, 0, 0],
-        hho: [0, 0, 0, 0, 0, 0, 0, 0],
-        clap: [0, 0, 0, 0, 0, 0, 0, 0],
-        tom: [0, 0, 0, 0, 0, 0, 0, 0],
-        cowbell: [0, 0, 0, 0, 0, 0, 0, 0],
-        shaker: [0, 0, 0, 0, 0, 0, 0, 0],
-        kick_slider: 99,
-        snare_slider: 99,
-        high_hat_slider: 99,
-        high_hat_open_slider: 99,
-        clap_slider: 99,
-        tom_slider: 99,
-        cowbell_slider: 99,
-        shaker_slider: 99,
-        kick_knob: 0,
-        snare_knob: 0,
-        high_hat_knob: 0,
-        high_hat_open_knob: 0,
-        clap_knob: 0,
-        tom_knob: 0,
-        cowbell_knob: 0,
-        shaker_knob: 0
-    };
+var currentState = {
+    play: 0,
+    currentStep: 0,
+    kick: [0, 0, 0, 0, 0, 0, 0, 0],
+    snare: [0, 0, 0, 0, 0, 0, 0, 0],
+    hh: [0, 0, 0, 0, 0, 0, 0, 0],
+    hho: [0, 0, 0, 0, 0, 0, 0, 0],
+    clap: [0, 0, 0, 0, 0, 0, 0, 0],
+    tom: [0, 0, 0, 0, 0, 0, 0, 0],
+    cowbell: [0, 0, 0, 0, 0, 0, 0, 0],
+    shaker: [0, 0, 0, 0, 0, 0, 0, 0],
+    kick_slider: 99,
+    snare_slider: 99,
+    high_hat_slider: 99,
+    high_hat_open_slider: 99,
+    clap_slider: 99,
+    tom_slider: 99,
+    cowbell_slider: 99,
+    shaker_slider: 99,
+    kick_knob: 0,
+    snare_knob: 0,
+    high_hat_knob: 0,
+    high_hat_open_knob: 0,
+    clap_knob: 0,
+    tom_knob: 0,
+    cowbell_knob: 0,
+    shaker_knob: 0
+};
+
+///////////////////////////////////
+// Socket Listeners and Emitters //
+///////////////////////////////////
 
 io.on('connection', function(socket) {
     var addedUser = false;
@@ -162,7 +184,7 @@ io.on('connection', function(socket) {
     socket.on('sliderMove', function(data){
         // console.log(data);
         var slider = data.name;
-        // console.log(currentState[slider]); 
+        // console.log(currentState[slider]);
         currentState[slider] = data.position;
         // console.log(currentState[slider]);
         // socket.emit("updateState", currentState);
@@ -172,7 +194,7 @@ io.on('connection', function(socket) {
     socket.on('knobMove', function(data){
         // console.log(data);
         var knob = data.name;
-        // console.log(currentState[slider]); 
+        // console.log(currentState[slider]);
         currentState[knob] = data.position;
         // console.log(currentState[knob]);
         socket.emit("updateState", currentState);
@@ -217,6 +239,12 @@ io.on('connection', function(socket) {
             numUsers: numUsers
         });
     });
+
+    socket.on('join or create room', function(roomname) {
+      serverRoomname = roomname;
+      console.log(serverRoomname);
+
+    })
 
     // when the client emits 'typing', we broadcast it to others
     socket.on('typing', function() {
