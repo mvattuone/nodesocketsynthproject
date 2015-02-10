@@ -8,6 +8,8 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var Room = require('./models/Room.js');
+
 
 var routes = require('./routes/index');
 var rooms = require('./routes/rooms');
@@ -101,6 +103,7 @@ app.use(express.static(__dirname + '/public'));
 /////////////////////////////////////
 
 var serverRoomname;
+var room_id;
 var usernames = {};
 var numUsers = 0;
 var currentState = {
@@ -120,7 +123,7 @@ var currentState = {
                       3: {d: 0, f: 0, a: 0, csharp: 0},
                       4: {d: 0, f: 0, a: 0, csharp: 0},
                       5: {d: 0, f: 0, a: 0, csharp: 0},
-                      6: {d: 0, f: 0, a: 0, csharp: 0},                                                                                              
+                      6: {d: 0, f: 0, a: 0, csharp: 0},
                       7: {d: 0, f: 0, a: 0, csharp: 0}
                     },
         key: { 0: {d: 0, f: 0, a: 0, csharp: 0},
@@ -129,7 +132,7 @@ var currentState = {
               3: {d: 0, f: 0, a: 0, csharp: 0},
               4: {d: 0, f: 0, a: 0, csharp: 0},
               5: {d: 0, f: 0, a: 0, csharp: 0},
-              6: {d: 0, f: 0, a: 0, csharp: 0},                                                                                              
+              6: {d: 0, f: 0, a: 0, csharp: 0},
               7: {d: 0, f: 0, a: 0, csharp: 0}
             },
     kick_slider: 99,
@@ -282,11 +285,91 @@ io.on('connection', function(socket) {
         });
     });
 
+    socket.on('save', function() {
+      var params = {
+        name: serverRoomname,
+        play: currentState.play,
+        currentStep: currentState.currentStep,
+        kick: currentState.kick,
+        snare: currentState.snare,
+        hh: currentState.hh,
+        hho: currentState.hho,
+        clap: currentState.clap,
+        tom: currentState.tom,
+        cowbell: currentState.cowbell,
+        shaker: currentState.shaker,
+        bass: currentState.bass,
+        key: currentState.key,
+        kick_slider: currentState.kick_slider,
+        snare_slider: currentState.snare_slider,
+        high_hat_slider: currentState.high_hat_slider,
+        high_hat_open_slider: currentState.high_hat_open_slider,
+        clap_slider: currentState.clap_slider,
+        tom_slider: currentState.tom_slider,
+        cowbell_slider: currentState.cowbell_slider,
+        shaker_slider: currentState.shaker_slider,
+        kick_knob: currentState.kick_knob,
+        snare_knob: currentState.snare_knob,
+        high_hat_knob: currentState.high_hat_knob,
+        high_hat_open_knob: currentState.high_hat_open_knob,
+        clap_knob: currentState.clap_knob,
+        tom_knob: currentState.tom_knob,
+        cowbell_knob: currentState.cowbell_knob,
+        shaker_knob: currentState.shaker_knob,
+      }
+        Room.findByIdAndUpdate(room_id, params, function (err, room) {
+          if (err) return next(err);
+          console.log("Saved/Updated Room:"+room);
+        });
+    });
+
     socket.on('join or create room', function(roomname) {
       serverRoomname = roomname;
       console.log(serverRoomname);
-      app.get('/rooms/'+roomname, function(req, res) {
-        console.log(res);
+      Room.find({name: roomname}, function(err, room) {
+        if (err) next(err);
+        if (room.length === 0) {
+          Room.create({name: roomname}, function(err, room) {
+            if (err) next(err);
+            console.log(room);
+            console.log("created room:"+roomname);
+            console.log("Current State:"+ currentState.play);
+            serverRoomname = room.name;
+            room_id = room._id;
+            currentState.play = room.play;
+            currentState.currentStep = room.currentStep;
+            currentState.kick = room.kick;
+            currentState.snare = room.snare;
+            currentState.hh = room.hh;
+            currentState.hho = room.hho;
+            currentState.clap = room.clap;
+            currentState.tom = room.tom;
+            currentState.cowbell = room.cowbell;
+            currentState.shaker = room.shaker;
+            currentState.bass = room.bass;
+            currentState.key = room.key;
+            currentState.kick_slider = room.kick_slider;
+            currentState.snare_slider = room.snare_slider;
+            currentState.high_hat_slider = room.high_hat_slider;
+            currentState.high_hat_open_slider = room.high_hat_open_slider;
+            currentState.clap_slider = room.clap_slider;
+            currentState.tom_slider = room.tom_slider;
+            currentState.cowbell_slider = room.cowbell_slider;
+            currentState.shaker_slider = room.shaker_slider;
+            currentState.kick_knob = room.kick_knob;
+            currentState.snare_knob = room.snare_knob;
+            currentState.high_hat_knob = room.high_hat_knob;
+            currentState.high_hat_open_knob = room.high_hat_open_knob;
+            currentState.clap_knob = room.clap_knob;
+            currentState.tom_knob = room.tom_knob;
+            currentState.cowbell_knob = room.cowbell_knob;
+            currentState.shaker_knob = room.shaker_knob;
+          });
+        } else {
+          console.log(room);
+          console.log("loaded room:"+roomname);
+          console.log("Current State:"+ currentState.play)
+        }
       })
     })
 
