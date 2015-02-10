@@ -4,7 +4,7 @@ window.App = {
   Scene: {},
   render: function() {
     // SET CAMERA POSITION RELATIVE TO MOUSE POSITION
-    camera.position.x = ( mouseX - camera.position.x ) * 0.001;
+    // camera.position.x = ( mouseX - camera.position.x ) * 0.001;
     camera.position.y = (( - mouseY - camera.position.y ) * 0.001) + 3;
     camera.lookAt( camera_pointer );
     requestAnimationFrame( App.render );
