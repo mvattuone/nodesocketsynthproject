@@ -251,14 +251,41 @@ function drawMachine(){
 
 	// Colors
 
-	var red = 0xf15a65;
-	var green = 0x8cc540;
-	var grey = 0x778899;
+	// var red = 0xf15a65;
+	// var green = 0x8cc540;
+	// var grey = 0x778899;
 	var purple = 0x6e2b90;
-	var blue = 0x00baed;
+	// var blue = 0x00baed;
 	var black = 0xa263b;
-	var yellow = 0xfbab1e;
-	var yellow_highlight = 0xf3712e;
+	// var yellow = 0xfbab1e;
+	// var yellow_highlight = 0xf3712e;
+
+	// NEW PALETTE
+
+	var white = 0xdddadc; 
+	var grey = 0xb5bcb9; 
+	var red = 0xd23a41; 
+	var orange = 0xd97053;
+	var pink = 0xeac4c1; 
+	var green = 0x649f9f; 
+	var light_green = 0x9baf9e; 
+	var blue = 0x405b74;
+	var light_blue = 0x4e91a1;
+	var yellow = 0xf6efbd; 
+	var yellow_highlight = 0xf6efbd;
+
+
+	// Textures
+
+	var floor = THREE.ImageUtils.loadTexture( "/textures/grid.jpg" );
+	floor.wrapS = floor.wrapT = THREE.RepeatWrapping; 
+	// floor.wrapT = THREE.RepeatWrapping;
+	floor.repeat.set( 6, 6);
+
+	var square = THREE.ImageUtils.loadTexture( "/textures/square.jpg" );
+	square.wrapS = square.wrapT = THREE.RepeatWrapping; 
+	// square.wrapT = THREE.RepeatWrapping;
+	square.repeat.set( 1, 1);
 
 	// Lighting
 
@@ -491,43 +518,125 @@ function drawMachine(){
 	App.Machine.bass_selector.click();
 
 	function drawTableObjects(){
-		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-		var material = new THREE.MeshLambertMaterial( {color: purple, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		var geometry = new THREE.BoxGeometry( 3.95, 3.95, 3.95 );
+		var material = new THREE.MeshLambertMaterial( {map: square, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		table_object = new THREE.Mesh( geometry, material );
 		table_object.receiveShadow = true;
 		table_object.castShadow = true;
-		table_object.translateX(20.4);
-		table_object.translateY(0.4);
-		table_object.rotateZ(.3);
+		table_object.translateX(22);
+		table_object.translateY(-5.5);
+		table_object.translateZ(0);
+		// table_object.rotateZ(.3);
 		scene.add(table_object);
 
-		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-		var material = new THREE.MeshLambertMaterial( {color: purple, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		var geometry = new THREE.BoxGeometry( 3.95, 8, 3.95 );
+		var material = new THREE.MeshLambertMaterial( {map: square, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		table_object_2 = new THREE.Mesh( geometry, material );
 		table_object_2.receiveShadow = true;
 		table_object_2.castShadow = true;
-		table_object_2.translateX(22.3);
-		table_object_2.translateY(2);
-		table_object_2.rotateZ(0.6);
+		table_object_2.translateX(22);
+		table_object_2.translateY(10);
+		table_object_2.translateZ(0);
+		// table_object_2.rotateZ(.3);
 		scene.add(table_object_2);
 
-		var geometry = new THREE.DodecahedronGeometry( 1.5);
-		var material = new THREE.MeshLambertMaterial( {color: purple, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		// var geometry = new THREE.BoxGeometry( 6, 2.6, 2.6 );
+		// var material = new THREE.MeshLambertMaterial( {map: square, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		// table_object_3 = new THREE.Mesh( geometry, material );
+		// table_object_3.receiveShadow = true;
+		// table_object_3.castShadow = true;
+		// table_object_3.translateX(13.7);
+		// table_object_3.translateY(11.3);
+		// table_object_3.translateZ(0);
+		// // table_object_3.rotateZ(.3);
+		// scene.add(table_object_3);
+
+		var geometry = new THREE.BoxGeometry( .7, 4, .8 );
+		var material = new THREE.MeshLambertMaterial( {color: pink, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		table_object_4 = new THREE.Mesh( geometry, material );
+		table_object_4.receiveShadow = true;
+		table_object_4.castShadow = true;
+		table_object_4.translateX(7);
+		table_object_4.translateY(12);
+		table_object_4.translateZ(0);
+		// table_object_4.rotateZ(.3);
+		scene.add(table_object_4);
+
+		var geometry = new THREE.BoxGeometry( .7, .7, 4 );
+		var material = new THREE.MeshLambertMaterial( {color: pink, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		table_object_5 = new THREE.Mesh( geometry, material );
+		table_object_5.receiveShadow = true;
+		table_object_5.castShadow = true;
+		table_object_5.translateX(7);
+		table_object_5.translateY(9.7);
+		table_object_5.translateZ(0);
+		// table_object_5.rotateZ(.3);
+		scene.add(table_object_5);
+
+		var geometry = new THREE.BoxGeometry( .7, 4, .8 );
+		var material = new THREE.MeshLambertMaterial( {color: pink, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		table_object_6 = new THREE.Mesh( geometry, material );
+		table_object_6.receiveShadow = true;
+		table_object_6.castShadow = true;
+		table_object_6.translateX(3.65);
+		table_object_6.translateY(12);
+		table_object_6.translateZ(0);
+		// table_object_6.rotateZ(.3);
+		scene.add(table_object_6);
+
+		var geometry = new THREE.BoxGeometry( 7.3, .7, .8 );
+		var material = new THREE.MeshLambertMaterial( {color: pink, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		table_object_7 = new THREE.Mesh( geometry, material );
+		table_object_7.receiveShadow = true;
+		table_object_7.castShadow = true;
+		table_object_7.translateX(.35);
+		table_object_7.translateY(9.7);
+		table_object_7.translateZ(0);
+		// table_object_7.rotateZ(.3);
+		scene.add(table_object_7);
+
+		var geometry = new THREE.BoxGeometry( .7, .7, 4 );
+		var material = new THREE.MeshLambertMaterial( {color: pink, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		table_object_8 = new THREE.Mesh( geometry, material );
+		table_object_8.receiveShadow = true;
+		table_object_8.castShadow = true;
+		table_object_8.translateX(-3);
+		table_object_8.translateY(9.7);
+		table_object_8.translateZ(0);
+		// table_object_8.rotateZ(.3);
+		scene.add(table_object_8);
+
+		var geometry = new THREE.BoxGeometry( .7, 4, .8 );
+		var material = new THREE.MeshLambertMaterial( {color: pink, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		table_object_9 = new THREE.Mesh( geometry, material );
+		table_object_9.receiveShadow = true;
+		table_object_9.castShadow = true;
+		table_object_9.translateX(-3);
+		table_object_9.translateY(12);
+		table_object_9.translateZ(1.6);
+		// table_object_9.rotateZ(.3);
+		scene.add(table_object_9);
+
+		var geometry = new THREE.DodecahedronGeometry( 2);
+		var material = new THREE.MeshLambertMaterial( {color: white, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		table_object_3 = new THREE.Mesh( geometry, material );
 		table_object_3.receiveShadow = true;
 		table_object_3.castShadow = true;
-		table_object_3.translateX(-11);
-		table_object_3.translateY(9);
-		table_object_3.translateZ(.5);
+		table_object_3.translateX(-18);
+		table_object_3.translateY(10);
+		table_object_3.translateZ(1);
 		table_object_3.rotateZ(0.8);
 		scene.add(table_object_3);
+
+		// 3d grid
 
 	}
 
 	function drawBackground(){
-		var geometry = new THREE.PlaneGeometry( 80, 40, 16 );
-		var material = new THREE.MeshLambertMaterial( {color: 0xFFE4C4, side: THREE.DoubleSide, shading: THREE.FlatShading} );
-		plane = new THREE.Mesh( geometry, material );
+		var geometry = new THREE.PlaneGeometry( 80, 80, 16 );
+		// var floor_material = new THREE.MeshLambertMaterial( {map: floor, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		var floor_material = new THREE.MeshLambertMaterial( {color: grey, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		plane = new THREE.Mesh( geometry, floor_material );
 		plane.translateZ(0);
 		// plane.translateX(0);
 		// plane.translateY(3);
@@ -537,7 +646,7 @@ function drawMachine(){
 
 	function drawDrumMachineBase(){
 		var geometry = new THREE.BoxGeometry( 19, 9, .75 );
-		var material = new THREE.MeshLambertMaterial( {color: grey, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		var material = new THREE.MeshLambertMaterial( {color: light_green, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		base = new THREE.Mesh( geometry, material );
 		// base.translateZ(-1);
 		base.receiveShadow = true;
@@ -559,11 +668,50 @@ function drawMachine(){
 			scene.add(bar);
 		};
 
+		var geometry = new THREE.CylinderGeometry( .15, .15, .8 );
+		var material = new THREE.MeshLambertMaterial( {color: white, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		screw = new THREE.Mesh( geometry, material );
+		screw.position.z = 0;
+		screw.receiveShadow = true;
+		screw.castShadow = true;
+		screw.rotateX(Math.PI / 2);
+		screw.position.x = -5;
+		screw.position.y = -1;
+		scene.add(screw);
+
+		screw = new THREE.Mesh( geometry, material );
+		screw.position.z = 0;
+		screw.receiveShadow = true;
+		screw.castShadow = true;
+		screw.rotateX(Math.PI / 2);
+		screw.position.x = -5;
+		screw.position.y = 7;
+		scene.add(screw);
+
+		screw = new THREE.Mesh( geometry, material );
+		screw.position.z = 0;
+		screw.receiveShadow = true;
+		screw.castShadow = true;
+		screw.rotateX(Math.PI / 2);
+		screw.position.x = -23;
+		screw.position.y = -1;
+		scene.add(screw);
+
+		screw = new THREE.Mesh( geometry, material );
+		screw.position.z = 0;
+		screw.receiveShadow = true;
+		screw.castShadow = true;
+		screw.rotateX(Math.PI / 2);
+		screw.position.x = -23;
+		screw.position.y = 7;
+		scene.add(screw);
+
 	};
 
 	function drawSynthBase(position){
+
 		var geometry = new THREE.BoxGeometry( 17, 9, .75 );
-		var material = new THREE.MeshLambertMaterial( {color: grey, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		var material = new THREE.MeshLambertMaterial( {color: light_blue, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		base = new THREE.Mesh( geometry, material );
 		// base.translateZ(-1);
 		base.receiveShadow = true;
@@ -572,6 +720,44 @@ function drawMachine(){
 		base.translateY(3);
 		scene.add(base);
 		objects.push( base );
+
+		var geometry = new THREE.CylinderGeometry( .15, .15, .8 );
+		var material = new THREE.MeshLambertMaterial( {color: white, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		screw = new THREE.Mesh( geometry, material );
+		screw.position.z = 0;
+		screw.receiveShadow = true;
+		screw.castShadow = true;
+		screw.rotateX(Math.PI / 2);
+		screw.position.x = 1;
+		screw.position.y = -1;
+		scene.add(screw);
+
+		screw = new THREE.Mesh( geometry, material );
+		screw.position.z = 0;
+		screw.receiveShadow = true;
+		screw.castShadow = true;
+		screw.rotateX(Math.PI / 2);
+		screw.position.x = 1;
+		screw.position.y = 7;
+		scene.add(screw);
+
+		screw = new THREE.Mesh( geometry, material );
+		screw.position.z = 0;
+		screw.receiveShadow = true;
+		screw.castShadow = true;
+		screw.rotateX(Math.PI / 2);
+		screw.position.x = 17;
+		screw.position.y = -1;
+		scene.add(screw);
+
+		screw = new THREE.Mesh( geometry, material );
+		screw.position.z = 0;
+		screw.receiveShadow = true;
+		screw.castShadow = true;
+		screw.rotateX(Math.PI / 2);
+		screw.position.x = 17;
+		screw.position.y = 7;
+		scene.add(screw);
 	}
 
 function drawReset(x, y, z, name)	{
@@ -600,22 +786,14 @@ function drawReset(x, y, z, name)	{
 
 		App.Machine[name].click = function(){
 			socket.emit('reset', name);
+			App.Machine[name].position.z = -0.05
+			clickSave = window.setInterval(function(){
+				App.Machine[name].position.z = 0;
+				clearInterval(clickSave);	
+			}, 100);
 		};
 
 		App.Machine[name].clickSocket = function(){
-			// if state is 0 (off), begin 'playing' the step sequencer and set to green, state state to on
-			// if state is 1 (on), stop sequencer and set state to off, color to red
-			// if (App.Machine[name].state === 0){
-			// 	start_player();
-			// 	this.material.color.setHex( green );
-			// 	App.Machine[name].state = 1;
-			// } else {
-			// 	stop_player();
-			// 	this.material.color.setHex( red );
-			// 	App.Machine[name].state = 0;
-			// }
-			// socket emitter
-			// socket.emit('push', name);
 		};
 
 		// Add to Scene
@@ -626,57 +804,6 @@ function drawReset(x, y, z, name)	{
 
 	};
 
-function drawReset(x, y, z, name)	{
-
-		// Geometry and Material
-
-		var geometry = new THREE.BoxGeometry( 1, 1, 1 );
-		var material = new THREE.MeshLambertMaterial( {color: black, side: THREE.DoubleSide, shading: THREE.FlatShading} );
-		App.Machine[name] = new THREE.Mesh( geometry, material );
-		App.Machine[name].receiveShadow = true;
-		App.Machine[name].castShadow = true;
-
-		// Set Location
-
-		App.Machine[name].translateX(x);
-		App.Machine[name].translateY(y);
-		App.Machine[name].translateZ(z);
-
-		// Set Parameters
-
-		App.Machine[name].state = 0;
-		App.Machine[name].name = name;
-
-		// Functions & Listeners
-
-
-		App.Machine[name].click = function(){
-			socket.emit('reset', name);
-		};
-
-		App.Machine[name].clickSocket = function(){
-			// if state is 0 (off), begin 'playing' the step sequencer and set to green, state state to on
-			// if state is 1 (on), stop sequencer and set state to off, color to red
-			// if (App.Machine[name].state === 0){
-			// 	start_player();
-			// 	this.material.color.setHex( green );
-			// 	App.Machine[name].state = 1;
-			// } else {
-			// 	stop_player();
-			// 	this.material.color.setHex( red );
-			// 	App.Machine[name].state = 0;
-			// }
-			// socket emitter
-			// socket.emit('push', name);
-		};
-
-		// Add to Scene
-
-		scene.add( App.Machine[name] );
-		objects.push( App.Machine[name] );
-		// play_button.push( App.Machine[name] );
-
-	};
 function drawSave(x, y, z, name)	{
 
 		// Geometry and Material
@@ -703,22 +830,14 @@ function drawSave(x, y, z, name)	{
 
 		App.Machine[name].click = function(){
 			socket.emit('save', name);
+			App.Machine[name].position.z = -0.05
+			clickSave = window.setInterval(function(){
+				App.Machine[name].position.z = 0;
+				clearInterval(clickSave);	
+			}, 100);
 		};
 
 		App.Machine[name].clickSocket = function(){
-			// if state is 0 (off), begin 'playing' the step sequencer and set to green, state state to on
-			// if state is 1 (on), stop sequencer and set state to off, color to red
-			// if (App.Machine[name].state === 0){
-			// 	start_player();
-			// 	this.material.color.setHex( green );
-			// 	App.Machine[name].state = 1;
-			// } else {
-			// 	stop_player();
-			// 	this.material.color.setHex( red );
-			// 	App.Machine[name].state = 0;
-			// }
-			// socket emitter
-			// socket.emit('push', name);
 		};
 
 		// Add to Scene
@@ -805,6 +924,18 @@ function drawSave(x, y, z, name)	{
 		App.Machine[name].translateY(y);
 		App.Machine[name].translateZ(z);
 
+		// var geometry = new THREE.BoxGeometry( 1.2, 1.2, .85 );
+		// var material = new THREE.MeshLambertMaterial( {color: light_green, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+		// button_base = new THREE.Mesh( geometry, material );
+		// button_base.receiveShadow = true;
+		// button_base.castShadow = true;
+
+		// button_base.translateX(x);
+		// button_base.translateY(y);
+		// button_base.translateZ(z);
+
+		// scene.add(button_base);
+
 		// Set Parameters
 
 		App.Machine[name].name = name;
@@ -864,6 +995,18 @@ function drawSave(x, y, z, name)	{
 			App.Machine[name].translateY(y);
 			App.Machine[name].translateZ(z);
 
+			// var geometry = new THREE.BoxGeometry( 1.2, 1.2, .85 );
+			// var material = new THREE.MeshLambertMaterial( {color: light_blue, side: THREE.DoubleSide, shading: THREE.FlatShading} );
+			// button_base = new THREE.Mesh( geometry, material );
+			// button_base.receiveShadow = true;
+			// button_base.castShadow = true;
+
+			// button_base.translateX(x);
+			// button_base.translateY(y);
+			// button_base.translateZ(z);
+
+			// scene.add(button_base);
+
 			// Set Parameters
 
 			App.Machine[name].name = name;
@@ -873,15 +1016,6 @@ function drawSave(x, y, z, name)	{
 			App.Machine[name].click = function(){
 				console.log(App.Machine[name]);
 				socket.emit('pushSynth', {current_synth_hash: array_name, note: sound, position: App.Machine[name].step_position});
-				// socket.emit('pushSeq', {array: array_name, name: App.Machine[name].step_position});
-				// if (App.Machine[name].state === 0){
-				// 	App.Machine[name].state = 1;
-				// 	setColor(App.Machine[name]);
-				// } else {
-				// 	App.Machine[name].state = 0;
-				// 	setColor(App.Machine[name]);
-				// }
-				// socket.emit('pushSeq', {array: array_name, name: App.Machine[name].step_position});
 			};
 
 			App.Machine[name].clickSocket = function(){
@@ -980,31 +1114,39 @@ function drawSave(x, y, z, name)	{
 	function drawKnob(x, y, z, name, type){
 		// Geometry and Material
 
-		var geometry = new THREE.CylinderGeometry( .45, 1, 1, 12 );
+		var geometry = new THREE.CylinderGeometry( .45, 1, .9, 12 );
 		var material = new THREE.MeshLambertMaterial( {color: blue, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		App.Machine[name] = new THREE.Mesh( geometry, material );
 		App.Machine[name].receiveShadow = true;
 		App.Machine[name].castShadow = true;
 
-
-		var geometry = new THREE.CylinderGeometry( .25, .8, 1, 12 );
-		var material = new THREE.MeshLambertMaterial( {color: blue, side: THREE.DoubleSide, shading: THREE.FlatShading} );
-		top_knob = new THREE.Mesh( geometry, material );
-		top_knob.translateZ(3);
-		top_knob.receiveShadow = true;
-		top_knob.castShadow = true;
-
-		var pointer_geometry = new THREE.BoxGeometry( .15, 1.25, 1 );
-		// pointer_geometry.translateY(y + .25);
-		var material = new THREE.MeshBasicMaterial( { color: green } );
+		var pointer_geometry = new THREE.CylinderGeometry( .325, .925, 1.05 );
+		var material = new THREE.MeshBasicMaterial( {color: 0xffffff, side: THREE.DoubleSide, shading: THREE.FlatShading} );
 		pointer = new THREE.Mesh( pointer_geometry, material );
+		pointer.receiveShadow = true;
+		pointer.castShadow = true;
 
-		// pointer.geometry.updateMatrix();
-				App.Machine[name].geometry.merge( pointer.geometry, pointer.geometry.matrix );
+		var pointer_geometry2 = new THREE.BoxGeometry( .15, .15, .25 );
+		pointer_2 = new THREE.Mesh( pointer_geometry2, material );
+		pointer_2.receiveShadow = true;
+		pointer_2.castShadow = true;
+		// pointer_2.translateY(1); 
+		// scene.add(pointer_2);
+		pointer_2.translateZ(-.2);
+		pointer_2.translateY(.475);
+		// pointer_2.geometry.updateMatrix();
+		// App.Machine[name].geometry.merge( pointer.geometry, pointer.geometry.matrix );
 
-		App.Machine[name].geometry.merge( pointer.geometry, pointer.geometry.matrix );
+		// App.Machine[name].geometry.merge( pointer.geometry, pointer.geometry.matrix );
 
-		pointer.translateY(5);
+
+		App.Machine[name].geometry.merge(pointer.geometry);
+		// App.Machine[name].geometry.merge(pointer_2.geometry);
+		App.Machine[name].add(pointer_2);
+		// App.Machine[name].geometry.merge(pointer_2.geometry, pointer_2.geometry.matrix);
+
+		// pointer.translateY(5);
+		// App.Machine[name].translateZ(.05);
 		// App.Machine[name].push(pointer);
 
 		App.Machine[name].click = function(){
@@ -1238,6 +1380,9 @@ function drawSynthSelector(x, y, z, name, array){
 		_.each(bass_buttons[current_step - 1], function(button){
 			setColor(button);
 		})
+		_.each(key_buttons[current_step - 1], function(button){
+			setColor(button);
+		})
 		current_step = 0;
 	}
 
@@ -1261,7 +1406,7 @@ function drawSynthSelector(x, y, z, name, array){
 		})
 		// set color of object to yellow
 		visible_steps.forEach(function(step){
-			step.material.color.setHex ( yellow_highlight );
+			step.material.color.setHex ( orange );
 		})
 		// check state to play sound or not of all steps in array
 		steps.forEach(function(step){
