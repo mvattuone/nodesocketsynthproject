@@ -327,7 +327,7 @@ io.on('connection', function(socket) {
 
     socket.on('save', function() {
       var params = {
-        name: serverRoomname,
+        name: currentState.name,
         play: currentState.play,
         currentStep: currentState.currentStep,
         kick: currentState.kick,
@@ -357,7 +357,9 @@ io.on('connection', function(socket) {
         cowbell_knob: currentState.cowbell_knob,
         shaker_knob: currentState.shaker_knob,
       }
-        Room.findByIdAndUpdate(room_id, params, function (err, room) {
+      console.log("save button pushed");
+      console.log(currentState.room_id);
+        Room.findByIdAndUpdate(currentState.room_id, params, function (err, room) {
           if (err) return next(err);
           console.log("Saved/Updated Room:"+room);
         });
@@ -366,14 +368,17 @@ io.on('connection', function(socket) {
     socket.on('join or create room', function(roomname) {
       serverRoomname = roomname;
       console.log(serverRoomname);
-      Room.find({name: roomname}, function(err, room) {
+      Room.findOne({name: roomname}, function(err, room) {
         if (err) next(err);
         if (room.length === 0) {
           Room.create({name: roomname}, function(err, room) {
             if (err) next(err);
-            console.log(room);
-            console.log("created room:"+roomname);
-            console.log("Current State:"+ currentState.play);
+            console.log("CREATED ROOM:"+roomname);
+            console.log("ROOM:"+room);
+          });
+
+        }
+        else {
             currentState.name = room.name;
             currentState.room_id = room._id;
             currentState.play = room.play;
@@ -404,11 +409,8 @@ io.on('connection', function(socket) {
             currentState.tom_knob = room.tom_knob;
             currentState.cowbell_knob = room.cowbell_knob;
             currentState.shaker_knob = room.shaker_knob;
-          });
-        } else {
-          console.log("loaded room:"+roomname);
-          console.log("ROOM:"+JSON.stringify(room));
-          console.log("STATE:"+JSON.stringify(currentState));
+            socket.emit("updateState", currentState);
+            socket.broadcast.emit("updateState", currentState);
         }
       })
     })

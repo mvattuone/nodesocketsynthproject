@@ -22,7 +22,7 @@ router.post('/', function(req, res, next) {
 
 // GET /rooms/:id (Show)
 router.get('/:name', function(req, res, next) {
-	Room.findById(req.params.name, function (err, room) {
+	Room.find(req.params.name, function (err, room) {
 		if (err) return next(err);
 		res.json(room);
 	});
