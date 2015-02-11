@@ -73,11 +73,13 @@ $(function() {
           socket.emit('join or create room', roomname);
           $loginPage.fadeOut();
           $chatPage.show();
+          $('#roomname').text('Room: '+roomname);
           $loginPage.off('click');
           $currentInput = $inputMessage.focus();
           $window.keydown(function (event) {
             if (event.which === 13) {
               sendMessage();
+              $('#roomname').val('roomname');
               socket.emit('stop typing');
               typing = false;
             }
@@ -265,7 +267,7 @@ $(function() {
   socket.on('login', function (data) {
     connected = true;
     // Display the welcome message
-    var message = "Welcome to sequenSync\n You're in room: "+data.name+"";
+    var message = "Welcome to sequenSync";
     console.log(data.name);
     log(message, {
       prepend: true

@@ -62,7 +62,7 @@ var numUsers = 0;
 					  3: {d: 0, f: 0, a: 0, csharp: 0},
 					  4: {d: 0, f: 0, a: 0, csharp: 0},
 					  5: {d: 0, f: 0, a: 0, csharp: 0},
-					  6: {d: 0, f: 0, a: 0, csharp: 0},				  					  					  					  					 
+					  6: {d: 0, f: 0, a: 0, csharp: 0},
 					  7: {d: 0, f: 0, a: 0, csharp: 0}
 					},
 		key: { 0: {d: 0, f: 0, a: 0, csharp: 0},
@@ -71,7 +71,7 @@ var numUsers = 0;
 			  3: {d: 0, f: 0, a: 0, csharp: 0},
 			  4: {d: 0, f: 0, a: 0, csharp: 0},
 			  5: {d: 0, f: 0, a: 0, csharp: 0},
-			  6: {d: 0, f: 0, a: 0, csharp: 0},				  					  					  					  					 
+			  6: {d: 0, f: 0, a: 0, csharp: 0},
 			  7: {d: 0, f: 0, a: 0, csharp: 0}
 			},
 		kick_slider: 99,
@@ -167,7 +167,7 @@ io.on('connection', function(socket) {
 	socket.on('sliderMove', function(data){
 		// console.log(data);
 		var slider = data.name;
-		// console.log(currentState[slider]); 
+		// console.log(currentState[slider]);
 		currentState[slider] = data.position;
 		// console.log(currentState[slider]);
 		// socket.emit("updateState", currentState);
@@ -177,7 +177,7 @@ io.on('connection', function(socket) {
 	socket.on('knobMove', function(data){
 		// console.log(data);
 		var knob = data.name;
-		// console.log(currentState[slider]); 
+		// console.log(currentState[slider]);
 		currentState[knob] = data.position;
 		// console.log(currentState[knob]);
 		socket.emit("updateState", currentState);

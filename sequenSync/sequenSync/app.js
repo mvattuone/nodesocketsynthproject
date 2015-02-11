@@ -370,7 +370,7 @@ io.on('connection', function(socket) {
       console.log(serverRoomname);
       Room.findOne({name: roomname}, function(err, room) {
         if (err) next(err);
-        if (room.length === 0) {
+        if (!room || room.length === 0) {
           Room.create({name: roomname}, function(err, room) {
             if (err) next(err);
             console.log("CREATED ROOM:"+roomname);
