@@ -6,6 +6,8 @@
     "start": "node ./bin/www"
   },
   "dependencies": {
+    "backo": "^1.1.0",
+    "backo2": "^1.0.2",
     "body-parser": "~1.10.1",
     "cookie-parser": "~1.3.3",
     "debug": "~2.1.1",
