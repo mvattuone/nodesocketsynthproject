@@ -1,6 +1,1 @@
-<<<<<<< HEAD
 web: node app.js
-||||||| merged common ancestors
-=======
-web: node index.js
->>>>>>> 150157a638a79fdbe9ae098db52a23373e67f029

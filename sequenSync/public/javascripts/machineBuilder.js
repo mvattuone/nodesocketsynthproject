@@ -262,28 +262,28 @@ function drawMachine(){
 
 	// NEW PALETTE
 
-	var white = 0xdddadc;
-	var grey = 0xb5bcb9;
-	var red = 0xd23a41;
+	var white = 0xdddadc; 
+	var grey = 0xb5bcb9; 
+	var red = 0xd23a41; 
 	var orange = 0xd97053;
-	var pink = 0xeac4c1;
-	var green = 0x649f9f;
-	var light_green = 0x9baf9e;
+	var pink = 0xeac4c1; 
+	var green = 0x649f9f; 
+	var light_green = 0x9baf9e; 
 	var blue = 0x405b74;
 	var light_blue = 0x4e91a1;
-	var yellow = 0xf6efbd;
+	var yellow = 0xf6efbd; 
 	var yellow_highlight = 0xf6efbd;
 
 
 	// Textures
 
 	var floor = THREE.ImageUtils.loadTexture( "/textures/grid.jpg" );
-	floor.wrapS = floor.wrapT = THREE.RepeatWrapping;
+	floor.wrapS = floor.wrapT = THREE.RepeatWrapping; 
 	// floor.wrapT = THREE.RepeatWrapping;
 	floor.repeat.set( 6, 6);
 
 	var square = THREE.ImageUtils.loadTexture( "/textures/square.jpg" );
-	square.wrapS = square.wrapT = THREE.RepeatWrapping;
+	square.wrapS = square.wrapT = THREE.RepeatWrapping; 
 	// square.wrapT = THREE.RepeatWrapping;
 	square.repeat.set( 1, 1);
 
@@ -789,7 +789,7 @@ function drawReset(x, y, z, name)	{
 			App.Machine[name].position.z = -0.05
 			clickSave = window.setInterval(function(){
 				App.Machine[name].position.z = 0;
-				clearInterval(clickSave);
+				clearInterval(clickSave);	
 			}, 100);
 		};
 
@@ -833,7 +833,7 @@ function drawSave(x, y, z, name)	{
 			App.Machine[name].position.z = -0.05
 			clickSave = window.setInterval(function(){
 				App.Machine[name].position.z = 0;
-				clearInterval(clickSave);
+				clearInterval(clickSave);	
 			}, 100);
 		};
 
@@ -887,12 +887,12 @@ function drawSave(x, y, z, name)	{
 			// if state is 1 (on), stop sequencer and set state to off, color to red
 			if (App.Machine[name].state === 0){
 				start_player();
-				App.Machine[name].position.z = -0.05;
+				App.Machine[name].position.z = -0.05; 
 				this.material.color.setHex( green );
 				App.Machine[name].state = 1;
 			} else {
 				stop_player();
-				App.Machine[name].position.z = 0;
+				App.Machine[name].position.z = 0; 
 				this.material.color.setHex( red );
 				App.Machine[name].state = 0;
 			}
@@ -956,11 +956,11 @@ function drawSave(x, y, z, name)	{
 			// if off, set state to 0 (off) and change color back to grey
 			if (App.Machine[name].state === 0){
 				App.Machine[name].state = 1;
-				App.Machine[name].position.z = -0.05;
+				App.Machine[name].position.z = -0.05; 
 				setColor(App.Machine[name]);
 			} else {
 				App.Machine[name].state = 0;
-				App.Machine[name].position.z = 0;
+				App.Machine[name].position.z = 0; 
 				setColor(App.Machine[name]);
 			}
 		};
@@ -1024,11 +1024,11 @@ function drawSave(x, y, z, name)	{
 				// if off, set state to 0 (off) and change color back to grey
 				if (App.Machine[name].state === 0){
 					App.Machine[name].state = 1;
-					App.Machine[name].position.z = -0.05;
+					App.Machine[name].position.z = -0.05; 
 					setColor(App.Machine[name]);
 				} else {
 					App.Machine[name].state = 0;
-					App.Machine[name].position.z = 0;
+					App.Machine[name].position.z = 0; 
 					setColor(App.Machine[name]);
 				}
 			};
@@ -1130,7 +1130,7 @@ function drawSave(x, y, z, name)	{
 		pointer_2 = new THREE.Mesh( pointer_geometry2, material );
 		pointer_2.receiveShadow = true;
 		pointer_2.castShadow = true;
-		// pointer_2.translateY(1);
+		// pointer_2.translateY(1); 
 		// scene.add(pointer_2);
 		pointer_2.translateZ(-.2);
 		pointer_2.translateY(.475);
@@ -1253,7 +1253,7 @@ function drawSave(x, y, z, name)	{
 				current_visible = App.Machine[name].array;
 				App.Machine[name].state = 1;
 				setColor(App.Machine[name]);
-				App.Machine[name].position.z = -0.05;
+				App.Machine[name].position.z = -0.05; 
 				//// set its array to visible
 				App.Machine[name].buttons.forEach(function(button){
 					button.visible = true;
@@ -1305,7 +1305,7 @@ function drawSynthSelector(x, y, z, name, array){
 				// set all synth selectors to off
 				synth_selectors.forEach( function(selector){
 					selector.state = 0;
-					selector.position.z = -0;
+					selector.position.z = -0; 
 					setColor(selector);
 					_.each(selector.array, function(element){
 						_.each(element, function(element_2){
@@ -1319,7 +1319,7 @@ function drawSynthSelector(x, y, z, name, array){
 				// console.log(App.Machine[name].array);
 				// current_visible = App.Machine[name].array;
 				App.Machine[name].state = 1;
-				App.Machine[name].position.z = -0.05;
+				App.Machine[name].position.z = -0.05; 
 				setColor(App.Machine[name]);
 				_.each(App.Machine[name].array, function(element){
 					_.each(element, function(element_2){

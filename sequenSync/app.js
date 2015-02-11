@@ -102,8 +102,7 @@ app.use(express.static(__dirname + '/public'));
 // DAW state data living on Server //
 /////////////////////////////////////
 
-
-app.locals.roomname;
+app.roomname;
 var room_id;
 var usernames = {};
 var numUsers = 0;
@@ -376,7 +375,6 @@ io.on('connection', function(socket) {
             if (err) next(err);
             console.log("CREATED ROOM:"+roomname);
             console.log("ROOM:"+room);
-            app.roomname = currentState.name;
           });
 
         }
@@ -411,7 +409,6 @@ io.on('connection', function(socket) {
             currentState.tom_knob = room.tom_knob;
             currentState.cowbell_knob = room.cowbell_knob;
             currentState.shaker_knob = room.shaker_knob;
-            app.roomname = currentState.name;
             socket.emit("updateState", currentState);
             socket.broadcast.emit("updateState", currentState);
         }
