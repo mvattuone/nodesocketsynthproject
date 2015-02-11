@@ -2,9 +2,10 @@ $(function() {
   var FADE_TIME = 150; // ms
   var TYPING_TIMER_LENGTH = 400; // ms
   var COLORS = [
-    '#e21400', '#91580f', '#f8a700', '#f78b00',
-    '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
-    '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
+    // '#e21400', '#91580f', '#f8a700', '#f78b00',
+    // '#58dc00', '#287b00', '#a8f07a', '#4ae8c4',
+    // '#3b88eb', '#3824aa', '#a700ff', '#d300e7'
+    '#d97053', '#649f9f', '#f6efbd', '#eac4c1'
   ];
 
   // Initialize varibles
@@ -72,13 +73,11 @@ $(function() {
           socket.emit('join or create room', roomname);
           $loginPage.fadeOut();
           $chatPage.show();
-          $('#roomname').text('Room: '+roomname);
           $loginPage.off('click');
           $currentInput = $inputMessage.focus();
           $window.keydown(function (event) {
             if (event.which === 13) {
               sendMessage();
-              $('#roomname').val('roomname');
               socket.emit('stop typing');
               typing = false;
             }
@@ -266,7 +265,7 @@ $(function() {
   socket.on('login', function (data) {
     connected = true;
     // Display the welcome message
-    var message = "Welcome to sequenSync";
+    var message = "Welcome to sequenSync\n You're in room: "+data.name+"";
     console.log(data.name);
     log(message, {
       prepend: true
