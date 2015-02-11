@@ -42,14 +42,14 @@ ul {
 /* Pages */
 
 .pages {
-  height: 50%;
+  height: 38%;
   margin: 0;
   padding: 0;
   width: 100%;
 }
 
 .page {
-  height: 50%;
+  height: 38%;
   position: absolute;
   width: 100%;
 }
@@ -57,7 +57,7 @@ ul {
 /* Login Page */
 
 .login.page {
-  background-color: #000;
+  background-color: #485F70;
 }
 
 .login.page .form {
@@ -81,7 +81,7 @@ ul {
   outline: none;
   padding-bottom: 15px;
   text-align: center;
-  width: 400px;
+  /*width: 400px;*/
 }
 
 .login.page .form .roomnameInput {
@@ -136,6 +136,7 @@ ul {
 /* Chat page */
 
 .chat.page {
+  background-color: #485F70;
   display: none;
 }
 
@@ -150,7 +151,7 @@ ul {
 }
 
 .log {
-  color: orange;
+  color: #fff;
   font-weight: 700;
   font-size: 70%;
   margin: 5px;
@@ -172,6 +173,7 @@ ul {
 }
 
 .message {
+  color: #fff;
   border: grey 1px solid;
   padding: 0.5rem;
 }
@@ -186,12 +188,13 @@ ul {
   overflow: hidden;
   padding-right: 15px;
   text-align: right;
+  color: #fff;
 }
 
 /* Input */
 
 .inputMessage {
-  border: 10px solid #000;
+  border: 10px solid #dddadc;
   bottom: 0;
   height: 60px;
   left: 0;
